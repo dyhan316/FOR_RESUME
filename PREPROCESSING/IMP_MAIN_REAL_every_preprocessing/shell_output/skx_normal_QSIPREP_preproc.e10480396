@@ -1,0 +1,21 @@
+Process Process-2:
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/multiprocessing/process.py", line 297, in _bootstrap
+    self.run()
+  File "/usr/local/miniconda/lib/python3.7/multiprocessing/process.py", line 99, in run
+    self._target(*self._args, **self._kwargs)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/qsiprep/cli/run.py", line 972, in build_qsiprep_workflow
+    force_syn=opts.force_syn
+  File "/usr/local/miniconda/lib/python3.7/site-packages/qsiprep/workflows/base.py", line 275, in init_qsiprep_wf
+    force_syn=force_syn)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/qsiprep/workflows/base.py", line 484, in init_single_subject_wf
+    subject_data, layout = collect_data(bids_dir, subject_id, filters=bids_filters)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/qsiprep/utils/bids.py", line 131, in collect_data
+    layout = BIDSLayout(str(bids_dir), validate=bids_validate)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/bids/layout/layout.py", line 137, in __init__
+    root, description = validate_root(root, validate)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/bids/layout/validation.py", line 77, in validate_root
+    json.dumps(EXAMPLE_BIDS_DESCRIPTION)
+bids.exceptions.BIDSValidationError: 'dataset_description.json' is missing from project root. Every valid BIDS dataset must have this file.
+Example contents of 'dataset_description.json': 
+{"Name": "Example dataset", "BIDSVersion": "1.0.2"}

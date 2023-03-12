@@ -1,0 +1,70 @@
+WARNING (10/22/22 21:51:29): LAUNCHER_WORKDIR variable not set. Using current directory.
+using /tmp/launcher.10441856.hostlist.at9fmmhS to get hosts
+starting job on c473-041
+QSIPrep failed: Workflow did not execute cleanly. Check log for details
+Traceback (most recent call last):
+  File "/usr/local/miniconda/bin/qsiprep", line 8, in <module>
+    sys.exit(main())
+  File "/usr/local/miniconda/lib/python3.7/site-packages/qsiprep/cli/run.py", line 647, in main
+    qsiprep_wf.run(**plugin_settings)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/workflows.py", line 638, in run
+    runner.run(execgraph, updatehash=updatehash, config=self.config)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/base.py", line 192, in run
+    report_nodes_not_run(notrun)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/tools.py", line 97, in report_nodes_not_run
+    ("Workflow did not execute cleanly. " "Check log for details")
+RuntimeError: Workflow did not execute cleanly. Check log for details
+QSIPrep failed: Workflow did not execute cleanly. Check log for details
+Traceback (most recent call last):
+  File "/usr/local/miniconda/bin/qsiprep", line 8, in <module>
+    sys.exit(main())
+  File "/usr/local/miniconda/lib/python3.7/site-packages/qsiprep/cli/run.py", line 647, in main
+    qsiprep_wf.run(**plugin_settings)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/workflows.py", line 638, in run
+    runner.run(execgraph, updatehash=updatehash, config=self.config)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/base.py", line 192, in run
+    report_nodes_not_run(notrun)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/tools.py", line 97, in report_nodes_not_run
+    ("Workflow did not execute cleanly. " "Check log for details")
+RuntimeError: Workflow did not execute cleanly. Check log for details
+QSIPrep failed: Workflow did not execute cleanly. Check log for details
+Traceback (most recent call last):
+  File "/usr/local/miniconda/bin/qsiprep", line 8, in <module>
+    sys.exit(main())
+  File "/usr/local/miniconda/lib/python3.7/site-packages/qsiprep/cli/run.py", line 647, in main
+    qsiprep_wf.run(**plugin_settings)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/workflows.py", line 638, in run
+    runner.run(execgraph, updatehash=updatehash, config=self.config)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/base.py", line 192, in run
+    report_nodes_not_run(notrun)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/tools.py", line 97, in report_nodes_not_run
+    ("Workflow did not execute cleanly. " "Check log for details")
+RuntimeError: Workflow did not execute cleanly. Check log for details
+QSIPrep failed: Workflow did not execute cleanly. Check log for details
+Traceback (most recent call last):
+  File "/usr/local/miniconda/bin/qsiprep", line 8, in <module>
+    sys.exit(main())
+  File "/usr/local/miniconda/lib/python3.7/site-packages/qsiprep/cli/run.py", line 647, in main
+    qsiprep_wf.run(**plugin_settings)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/workflows.py", line 638, in run
+    runner.run(execgraph, updatehash=updatehash, config=self.config)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/base.py", line 192, in run
+    report_nodes_not_run(notrun)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/tools.py", line 97, in report_nodes_not_run
+    ("Workflow did not execute cleanly. " "Check log for details")
+RuntimeError: Workflow did not execute cleanly. Check log for details
+QSIPrep failed: Workflow did not execute cleanly. Check log for details
+Traceback (most recent call last):
+  File "/usr/local/miniconda/bin/qsiprep", line 8, in <module>
+    sys.exit(main())
+  File "/usr/local/miniconda/lib/python3.7/site-packages/qsiprep/cli/run.py", line 647, in main
+    qsiprep_wf.run(**plugin_settings)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/workflows.py", line 638, in run
+    runner.run(execgraph, updatehash=updatehash, config=self.config)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/base.py", line 192, in run
+    report_nodes_not_run(notrun)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/tools.py", line 97, in report_nodes_not_run
+    ("Workflow did not execute cleanly. " "Check log for details")
+RuntimeError: Workflow did not execute cleanly. Check log for details
+slurmstepd: error: *** JOB 10441856 ON c473-041 CANCELLED AT 2022-10-23T05:12:10 ***
+Killed by signal 15.

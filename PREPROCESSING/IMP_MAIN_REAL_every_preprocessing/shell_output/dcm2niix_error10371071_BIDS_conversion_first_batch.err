@@ -1,0 +1,21 @@
+Error: Missing images. Found 137 images, expected 138 slices per volume and instance number (0020,0013) ranges from 1 to 138
+Error:  Recompiling with '-DmyInstanceNumberOrderIsNotSpatial' might help.
+Error: Converted 130 of 656 files
+Error:  Recompiling with '-DmyInstanceNumberOrderIsNotSpatial' might help.
+Error: Converted 120 of 706 files
+Error:  Recompiling with '-DmyInstanceNumberOrderIsNotSpatial' might help.
+Error: Converted 130 of 1866 files
+Error:  Recompiling with '-DmyInstanceNumberOrderIsNotSpatial' might help.
+Error: Converted 140 of 1199 files
+Error: Missing images. Found 36 images, expected 140 slices per volume and instance number (0020,0013) ranges from 77 to 140
+Error:  Recompiling with '-DmyInstanceNumberOrderIsNotSpatial' might help.
+Error: Converted 122 of 1630 files
+Error:  Recompiling with '-DmyInstanceNumberOrderIsNotSpatial' might help.
+Error: Converted 112 of 1645 files
+Error:  Recompiling with '-DmyInstanceNumberOrderIsNotSpatial' might help.
+Error: Converted 138 of 1352 files
+Error: Missing images. Found 143 images, expected 144 slices per volume and instance number (0020,0013) ranges from 1 to 144
+Error: Missing images. Found 24 images, expected 150 slices per volume and instance number (0020,0013) ranges from 107 to 150
+Error:  Recompiling with '-DmyInstanceNumberOrderIsNotSpatial' might help.
+Error: Converted 1338 of 1987 files
+Error: Missing images. Found 128 images, expected 148 slices per volume and instance number (0020,0013) ranges from 1 to 144

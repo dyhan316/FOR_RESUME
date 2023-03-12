@@ -1,0 +1,531 @@
+221022-21:53:43,611 nipype.workflow INFO:
+	 Running with omp_nthreads=8, nthreads=10
+221022-21:53:43,737 nipype.workflow IMPORTANT:
+	 
+    Running qsiprep version 0.14.3:
+      * BIDS dataset path: /data.
+      * Participant list: ['101462'].
+      * Run identifier: 20221022-215252_a7e5eedc-3e78-41cc-8153-4647fe79e35c.
+    
+221022-21:53:46,429 nipype.utils WARNING:
+	 A newer version (1.8.4) of nipy/nipype is available. You are using 1.6.1
+221022-21:55:02,993 nipype.workflow INFO:
+	 Combining all 1 dwis within the single available session
+221022-21:55:05,251 nipype.workflow INFO:
+	 [{'dwi_series': ['/data/sub-101462/dwi/sub-101462_dwi.nii.gz'], 'fieldmap_info': {'suffix': None}, 'dwi_series_pedir': 'j', 'concatenated_bids_name': 'sub-101462'}]
+221022-21:55:08,694 nipype.workflow IMPORTANT:
+	 Creating dwi processing workflow "dwi_preproc_wf" to produce output sub-101462 (1.07 GB / 36 DWIs). Memory resampled/largemem=1.27/1.34 GB.
+221022-21:55:09,106 nipype.workflow INFO:
+	 Automatically using 5, 5, 5 window for dwidenoise
+221022-21:55:13,852 nipype.workflow INFO:
+	 Using 8 threads in eddy
+221022-21:57:03,448 nipype.workflow IMPORTANT:
+	 Works derived from this qsiprep execution should include the following boilerplate:
+
+
+Preprocessing was performed using *QSIPrep* 0.14.3,
+which is based on *Nipype* 1.6.1
+(@nipype1; @nipype2; RRID:SCR_002502).
+
+Anatomical data preprocessing
+
+: The T1-weighted (T1w) image was corrected for intensity non-uniformity (INU)
+using `N4BiasFieldCorrection` [@n4, ANTs 2.3.1],
+and used as T1w-reference throughout the workflow.
+The T1w-reference was then skull-stripped using `antsBrainExtraction.sh`
+(ANTs 2.3.1), using OASIS as target template.
+Brain surfaces were reconstructed using `recon-all` [FreeSurfer 6.0.1,
+RRID:SCR_001847, @fs_reconall], and the brain mask estimated
+previously was refined with a custom variation of the method to reconcile
+ANTs-derived and FreeSurfer-derived segmentations of the cortical
+gray-matter of Mindboggle [RRID:SCR_002438, @mindboggle].
+Spatial normalization to the ICBM 152 Nonlinear Asymmetrical
+template version 2009c [@mni, RRID:SCR_008796] was performed
+through nonlinear registration with `antsRegistration`
+[ANTs 2.3.1, RRID:SCR_004757, @ants], using
+brain-extracted versions of both T1w volume and template.
+Brain tissue segmentation of cerebrospinal fluid (CSF),
+white-matter (WM) and gray-matter (GM) was performed on
+the brain-extracted T1w using `FAST` [FSL 6.0.3:b862cdd5, RRID:SCR_002823,
+@fsl_fast].
+
+
+Diffusion data preprocessing
+
+: Any images with a b-value less than 100 s/mm^2 were treated as a *b*=0 image. MP-PCA denoising as implemented in MRtrix3's `dwidenoise`[@dwidenoise1] was applied with a 5-voxel window. After MP-PCA, Gibbs unringing was performed using MRtrix3's `mrdegibbs` [@mrdegibbs]. Following unringing, B1 field inhomogeneity was corrected using `dwibiascorrect` from MRtrix3 with the N4 algorithm [@n4]. After B1 bias correction, the mean intensity of the DWI series was adjusted so all the mean intensity of the b=0 images matched across eachseparate DWI scanning sequence.
+
+FSL (version 6.0.3:b862cdd5)'s eddy was used for head motion correction and Eddy current correction [@anderssoneddy]. Eddy was configured with a $q$-space smoothing factor of 10, a total of 5 iterations, and 1000 voxels used to estimate hyperparameters. A linear first level model and a linear second level model were used to characterize Eddy current-related spatial distortion. $q$-space coordinates were forcefully assigned to shells. Field offset was attempted to be separated from subject movement. Shells were aligned post-eddy. Eddy's outlier replacement was run [@eddyrepol]. Data were grouped by slice, only including values from slices determined to contain at least 250 intracerebral voxels. Groups deviating by more than 4 standard deviations from the prediction had their data replaced with imputed values. Final interpolation was performed using the `jac` method.
+
+Several confounding time-series were calculated based on the
+preprocessed DWI: framewise displacement (FD) using the
+implementation in *Nipype* [following the definitions by @power_fd_dvars].
+The head-motion estimates calculated in the correction step were also
+placed within the corresponding confounds file. Slicewise cross correlation
+was also calculated.
+The DWI time-series were resampled to ACPC,
+generating a *preprocessed DWI run in ACPC space* with 1.2mm isotropic voxels.
+
+
+Many internal operations of *QSIPrep* use
+*Nilearn* 0.8.1 [@nilearn, RRID:SCR_001362] and
+*Dipy* [@dipy].
+For more details of the pipeline, see [the section corresponding
+to workflows in *QSIPrep*'s documentation](https://qsiprep.readthedocs.io/en/latest/workflows.html "QSIPrep's documentation").
+
+
+### References
+
+
+221022-21:57:14,119 nipype.workflow WARNING:
+	 Could not generate CITATION.html file:
+pandoc -s --bibliography /usr/local/miniconda/lib/python3.7/site-packages/qsiprep/data/boilerplate.bib --filter pandoc-citeproc /out/qsiprep/logs/CITATION.md -o /out/qsiprep/logs/CITATION.html
+221022-21:57:24,815 nipype.workflow WARNING:
+	 Could not generate CITATION.tex file:
+pandoc -s --bibliography /usr/local/miniconda/lib/python3.7/site-packages/qsiprep/data/boilerplate.bib --natbib /out/qsiprep/logs/CITATION.md -o /out/qsiprep/logs/CITATION.tex
+221022-22:05:47,691 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101462_wf.anat_preproc_wf.output_grid_wf.autobox_template" in "/out/tmp/qsiprep_wf/single_subject_101462_wf/anat_preproc_wf/output_grid_wf/autobox_template".
+221022-22:05:47,741 nipype.workflow INFO:
+	 [Node] Running "autobox_template" ("nipype.interfaces.afni.utils.Autobox"), a CommandLine Interface with command:
+3dAutobox -input /out/tmp/qsiprep_wf/single_subject_101462_wf/anat_preproc_wf/output_grid_wf/autobox_template/mni_1mm_t1w_lps.nii.gz -prefix mni_1mm_t1w_lps_autobox.nii.gz -npad 8
+221022-22:06:41,803 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101462_wf.anat_preproc_wf.output_grid_wf.autobox_template".
+221022-22:07:33,637 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101462_wf.anat_preproc_wf.output_grid_wf.deoblique_autobox" in "/out/tmp/qsiprep_wf/single_subject_101462_wf/anat_preproc_wf/output_grid_wf/deoblique_autobox".
+221022-22:07:33,699 nipype.workflow INFO:
+	 [Node] Running "deoblique_autobox" ("nipype.interfaces.afni.preprocess.Warp"), a CommandLine Interface with command:
+3dWarp -deoblique -prefix mni_1mm_t1w_lps_autobox_warp.nii.gz /out/tmp/qsiprep_wf/single_subject_101462_wf/anat_preproc_wf/output_grid_wf/deoblique_autobox/mni_1mm_t1w_lps_autobox.nii.gz
+221022-22:07:41,788 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101462_wf.anat_preproc_wf.output_grid_wf.deoblique_autobox".
+221022-22:08:40,731 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101462_wf.anat_preproc_wf.output_grid_wf.resample_to_voxel_size" in "/out/tmp/qsiprep_wf/single_subject_101462_wf/anat_preproc_wf/output_grid_wf/resample_to_voxel_size".
+221022-22:08:40,784 nipype.workflow INFO:
+	 [Node] Running "resample_to_voxel_size" ("nipype.interfaces.afni.utils.Resample"), a CommandLine Interface with command:
+3dresample -prefix mni_1mm_t1w_lps_autobox_warp_resample.nii.gz -dxyz 1.200000 1.200000 1.200000 -inset /out/tmp/qsiprep_wf/single_subject_101462_wf/anat_preproc_wf/output_grid_wf/resample_to_voxel_size/mni_1mm_t1w_lps_autobox_warp.nii.gz
+221022-22:08:52,214 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101462_wf.anat_preproc_wf.output_grid_wf.resample_to_voxel_size".
+221022-22:10:45,892 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101462_wf.bidssrc" in "/out/tmp/qsiprep_wf/single_subject_101462_wf/bidssrc".
+221022-22:10:46,765 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.conform_dwis01" in "/out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/conform_dwis01".
+221022-22:10:49,775 nipype.workflow INFO:
+	 [Node] Running "bidssrc" ("qsiprep.interfaces.bids.BIDSDataGrabber")
+221022-22:10:49,962 nipype.interface WARNING:
+	 No 't2w' images found for sub-<undefined>
+221022-22:10:49,963 nipype.interface WARNING:
+	 No 'flair' images found for sub-<undefined>
+221022-22:10:49,964 nipype.interface WARNING:
+	 No 'fmap' images found for sub-<undefined>
+221022-22:10:50,384 nipype.interface WARNING:
+	 No 'sbref' images found for sub-<undefined>
+221022-22:10:50,385 nipype.interface WARNING:
+	 No 'roi' images found for sub-<undefined>
+221022-22:10:50,291 nipype.workflow INFO:
+	 [Node] Running "conform_dwis01" ("qsiprep.interfaces.images.ConformDwi")
+221022-22:10:54,795 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101462_wf.bidssrc".
+221022-22:12:02,273 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101462_wf.anat_preproc_wf.anat_template_wf.t1_template_dimensions" in "/out/tmp/qsiprep_wf/single_subject_101462_wf/anat_preproc_wf/anat_template_wf/t1_template_dimensions".
+221022-22:13:20,849 nipype.utils WARNING:
+	 A newer version (1.8.4) of nipy/nipype is available. You are using 1.6.1
+221022-22:15:59,609 nipype.workflow INFO:
+	 [Node] Running "t1_template_dimensions" ("qsiprep.niworkflows.interfaces.images.TemplateDimensions")
+221022-22:16:17,908 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101462_wf.anat_preproc_wf.anat_template_wf.t1_template_dimensions".
+221022-22:16:52,144 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101462_wf.anat_preproc_wf.anat_derivatives_wf.t1_name" in "/out/tmp/qsiprep_wf/single_subject_101462_wf/anat_preproc_wf/anat_derivatives_wf/t1_name".
+221022-22:17:02,853 nipype.workflow INFO:
+	 [Node] Running "t1_name" ("nipype.interfaces.utility.wrappers.Function")
+221022-22:17:02,909 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101462_wf.anat_preproc_wf.anat_derivatives_wf.t1_name".
+221022-22:19:34,469 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101462_wf.anat_preproc_wf.anat_template_wf.t1_conform" in "/out/tmp/qsiprep_wf/single_subject_101462_wf/anat_preproc_wf/anat_template_wf/t1_conform".
+221022-22:19:37,661 nipype.workflow INFO:
+	 [Node] Setting-up "_t1_conform0" in "/out/tmp/qsiprep_wf/single_subject_101462_wf/anat_preproc_wf/anat_template_wf/t1_conform/mapflow/_t1_conform0".
+221022-22:19:39,459 nipype.workflow INFO:
+	 [Node] Running "_t1_conform0" ("qsiprep.interfaces.images.Conform")
+221022-22:21:47,57 nipype.interface WARNING:
+	 Removing obliquity from image affine
+221022-22:28:47,99 nipype.interface INFO:
+	 Not applying reorientation to /data/sub-101462/dwi/sub-101462_dwi.nii.gz: already in LAS
+221022-22:28:53,202 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.conform_dwis01".
+221022-22:29:22,428 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.conformed_images" in "/out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/conformed_images".
+221022-22:29:22,747 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.conformed_raw_images" in "/out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/conformed_raw_images".
+221022-22:29:23,67 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.conformed_bvals" in "/out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/conformed_bvals".
+221022-22:29:23,381 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.conformed_bvecs" in "/out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/conformed_bvecs".
+221022-22:29:23,689 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.conformation_reports" in "/out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/conformation_reports".
+221022-22:32:38,488 nipype.workflow INFO:
+	 [Node] Running "conformed_bvecs" ("nipype.interfaces.utility.base.Merge")
+221022-22:32:40,132 nipype.workflow INFO:
+	 [Node] Running "conformed_bvals" ("nipype.interfaces.utility.base.Merge")
+221022-22:32:40,848 nipype.workflow INFO:
+	 [Node] Running "conformed_images" ("nipype.interfaces.utility.base.Merge")
+221022-22:32:42,196 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.conformed_bvecs".
+221022-22:32:42,236 nipype.workflow INFO:
+	 [Node] Running "conformation_reports" ("nipype.interfaces.utility.base.Merge")
+221022-22:32:43,778 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.conformed_bvals".
+221022-22:32:45,116 nipype.workflow INFO:
+	 [Node] Running "conformed_raw_images" ("nipype.interfaces.utility.base.Merge")
+221022-22:32:45,497 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.conformed_images".
+221022-22:32:46,110 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.conformation_reports".
+221022-22:32:49,407 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.conformed_raw_images".
+221022-22:33:22,203 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.raw_merge" in "/out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/raw_merge".
+221022-22:33:24,718 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.merge_dwis" in "/out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/merge_dwis".
+221022-22:33:25,113 nipype.workflow INFO:
+	 [Node] Running "raw_merge" ("qsiprep.interfaces.nilearn.Merge")
+221022-22:33:29,572 nipype.workflow INFO:
+	 [Node] Running "merge_dwis" ("qsiprep.interfaces.dwi_merge.MergeDWIs")
+221022-22:35:37,8 nipype.workflow INFO:
+	 [Node] Finished "_t1_conform0".
+221022-22:35:38,736 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101462_wf.anat_preproc_wf.anat_template_wf.t1_conform".
+221022-22:36:10,814 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101462_wf.anat_preproc_wf.skullstrip_wf.t1_skull_strip" in "/out/tmp/qsiprep_wf/single_subject_101462_wf/anat_preproc_wf/skullstrip_wf/t1_skull_strip".
+221022-22:38:57,828 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.merge_dwis".
+221022-22:39:09,363 nipype.workflow INFO:
+	 [Node] Running "t1_skull_strip" ("nipype.interfaces.ants.segmentation.BrainExtraction"), a CommandLine Interface with command:
+antsBrainExtraction.sh -a /out/tmp/qsiprep_wf/single_subject_101462_wf/anat_preproc_wf/anat_template_wf/t1_conform/mapflow/_t1_conform0/sub-101462_T1w_lps.nii.gz -m /out/tmp/qsiprep_wf/single_subject_101462_wf/anat_preproc_wf/skullstrip_wf/t1_skull_strip/tpl-OASIS30ANTs_res-01_class-brainmask_probtissue.nii.gz -e /niworkflows_data/tpl-OASIS30ANTs/tpl-OASIS30ANTs_res-01_T1w.nii.gz -d 3 -f /niworkflows_data/tpl-OASIS30ANTs/tpl-OASIS30ANTs_res-01_label-BrainCerebellumExtraction_roi.nii.gz -s nii.gz -k 1 -o highres001_ -q 1 -u 1
+221022-22:39:24,925 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.merged_denoise.denoiser" in "/out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/merged_denoise/denoiser".
+221022-22:39:32,617 nipype.workflow INFO:
+	 [Node] Running "denoiser" ("qsiprep.interfaces.mrtrix.DWIDenoise"), a CommandLine Interface with command:
+dwidenoise -extent 5,5,5 -noise sub-101462_dwi_noise.nii.gz /data/sub-101462/dwi/sub-101462_dwi.nii.gz sub-101462_dwi_denoised.nii.gz
+221022-23:02:13,214 nipype.workflow WARNING:
+	 Storing result file without outputs
+221022-23:02:14,17 nipype.workflow WARNING:
+	 [Node] Error on "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.merged_denoise.denoiser" (/out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/merged_denoise/denoiser)
+221022-23:02:15,575 nipype.workflow ERROR:
+	 Node denoiser failed to run on host c473-041.stampede2.tacc.utexas.edu.
+221022-23:02:18,414 nipype.workflow ERROR:
+	 Saving crash info to /out/qsiprep/sub-101462/log/20221022-215252_a7e5eedc-3e78-41cc-8153-4647fe79e35c/crash-20221022-230217-tg881334-denoiser-d8132342-9aef-452c-bba9-de6352640fb5.txt
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 67, in run_node
+    result["result"] = node.run(updatehash=updatehash)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 516, in run
+    result = self._run_interface(execute=True)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 635, in _run_interface
+    return self._run_command(execute)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 741, in _run_command
+    result = self._interface.run(cwd=outdir)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/interfaces/base/core.py", line 428, in run
+    runtime = self._run_interface(runtime)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/interfaces/base/core.py", line 822, in _run_interface
+    self.raise_exception(runtime)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/interfaces/base/core.py", line 753, in raise_exception
+    ).format(**runtime.dictcopy())
+RuntimeError: Command:
+dwidenoise -extent 5,5,5 -noise sub-101462_dwi_noise.nii.gz /data/sub-101462/dwi/sub-101462_dwi.nii.gz sub-101462_dwi_denoised.nii.gz
+Standard output:
+
+Standard error:
+[?7l
+dwidenoise: [  0%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [  1%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [  2%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [  3%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [  4%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [  5%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [  6%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [  7%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [  8%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [  9%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 10%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 11%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 12%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 13%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 14%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 15%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 16%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 17%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 18%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 19%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 20%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 21%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 22%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 23%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 24%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 25%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 26%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 27%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 28%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 29%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 30%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 31%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 32%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 33%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 34%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 35%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 36%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 37%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 38%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 39%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 40%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 41%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 42%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 43%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 44%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 45%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 46%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 47%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 48%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 49%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 50%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 51%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 52%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 53%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 54%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 55%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 56%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 57%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 58%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 59%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 60%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 61%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 62%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 63%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 64%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 65%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 66%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 67%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 68%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 69%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 70%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 71%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 72%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 73%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 74%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 75%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 76%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 77%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 78%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 79%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 80%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 81%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 82%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 83%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 84%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 85%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 86%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 87%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 88%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 89%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 90%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 91%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 92%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 93%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 94%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 95%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 96%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 97%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 98%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 99%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h
+dwidenoise: [100%] uncompressing image "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"[0K
+[?7l
+dwidenoise: [  0%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [  1%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [  2%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [  3%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [  4%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [  5%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [  6%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [  7%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [  8%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [  9%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 10%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 11%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 12%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 13%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 14%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 15%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 16%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 17%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 18%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 19%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 20%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 21%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 22%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 23%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 24%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 25%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 26%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 27%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 28%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 29%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 30%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 31%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 32%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 33%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 34%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 35%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 36%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 37%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 38%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 39%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 40%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 41%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 42%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 43%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 44%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 45%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 46%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 47%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 48%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 49%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 50%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 51%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 52%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 53%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 54%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 55%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 56%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 57%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 58%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 59%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 60%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 61%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 62%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 63%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 64%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 65%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 66%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 67%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 68%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 69%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 70%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 71%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 72%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 73%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 74%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 75%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 76%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 77%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 78%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 79%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 80%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 81%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 82%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 83%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 84%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 85%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 86%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 87%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 88%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 89%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 90%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 91%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 92%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 93%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 94%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 95%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 96%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 97%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 98%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [ 99%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h[?7l
+dwidenoise: [100%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"...[0K[?7h
+dwidenoise: [100%] preloading data for "/data/sub-101462/dwi/sub-101462_dwi.nii.gz"[0K
+terminate called after throwing an instance of 'std::bad_alloc'
+  what():  std::bad_alloc
+Aborted
+Return code: 134
+
+221022-23:06:56,203 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.raw_merge".
+221022-23:07:53,306 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.test_pre_hmc_connect" in "/out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/test_pre_hmc_connect".
+221022-23:07:58,171 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.dwi_qc_wf.raw_src" in "/out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src".
+221022-23:07:58,190 nipype.workflow INFO:
+	 [Node] Running "test_pre_hmc_connect" ("qsiprep.interfaces.utils.TestInput")
+221022-23:07:59,47 nipype.workflow WARNING:
+	 Storing result file without outputs
+221022-23:08:00,405 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.test_pre_hmc_connect".
+221022-23:08:08,876 nipype.workflow INFO:
+	 [Node] Running "raw_src" ("qsiprep.interfaces.dsi_studio.DSIStudioCreateSrc"), a CommandLine Interface with command:
+dsi_studio --action=src  --bval=/data/sub-101462/dwi/sub-101462_dwi.bval --bvec=/data/sub-101462/dwi/sub-101462_dwi.bvec --source=/out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/raw_merge/sub-101462_dwi_merged.nii.gz --threads=1 --output=/out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src/sub-101462_dwi_merged.src.gz
+221022-23:08:31,413 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.dwi_qc_wf.raw_src" in "/out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_src".
+221022-23:08:41,213 nipype.workflow INFO:
+	 [Node] Running "raw_src" ("qsiprep.interfaces.dsi_studio.DSIStudioCreateSrc"), a CommandLine Interface with command:
+dsi_studio --action=src  --bval=/data/sub-101462/dwi/sub-101462_dwi.bval --bvec=/data/sub-101462/dwi/sub-101462_dwi.bvec --source=/out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/raw_merge/sub-101462_dwi_merged.nii.gz --threads=1 --output=/out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_src/sub-101462_dwi_merged.src.gz
+221023-00:31:18,461 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.dwi_qc_wf.raw_src".
+221023-00:31:45,370 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.dwi_qc_wf.raw_src".
+221023-00:32:22,69 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.dwi_qc_wf.raw_src_qc" in "/out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src_qc".
+221023-00:32:27,662 nipype.workflow INFO:
+	 [Node] Running "raw_src_qc" ("qsiprep.interfaces.dsi_studio.DSIStudioSrcQC")
+221023-00:33:07,616 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.dwi_qc_wf.raw_gqi" in "/out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_gqi".
+221023-00:33:13,993 nipype.workflow INFO:
+	 [Node] Running "raw_gqi" ("qsiprep.interfaces.dsi_studio.DSIStudioGQIReconstruction"), a CommandLine Interface with command:
+dsi_studio --action=rec --method=4 --check_btable=0 --source=/out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_gqi/sub-101462_dwi_merged.src.gz --threads=1 --num_fiber=3 --record_odf=1 --param0=1.2500 --thread_count=1
+221023-00:44:51,629 nipype.interface INFO:
+	 DSI Studio Sep 16 2021, Fang-Cheng Yeh
+source=/out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src_qc/sub-101462_dwi_merged.src.gz
+action=qc
+checking /out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src_qc/sub-101462_dwi_merged.src.gz
+
+221023-00:44:56,316 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.dwi_qc_wf.raw_src_qc".
+221023-00:45:39,115 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.dwi_qc_wf.raw_src_qc" in "/out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_src_qc".
+221023-00:45:44,621 nipype.workflow INFO:
+	 [Node] Running "raw_src_qc" ("qsiprep.interfaces.dsi_studio.DSIStudioSrcQC")
+221023-00:54:53,248 nipype.interface INFO:
+	 DSI Studio Sep 16 2021, Fang-Cheng Yeh
+source=/out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_src_qc/sub-101462_dwi_merged.src.gz
+action=qc
+checking /out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_src_qc/sub-101462_dwi_merged.src.gz
+Resource temporarily unavailable
+
+221023-00:54:58,4 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.dwi_qc_wf.raw_src_qc".
+221023-00:55:57,925 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.dwi_qc_wf.raw_gqi" in "/out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_gqi".
+221023-00:56:04,460 nipype.workflow INFO:
+	 [Node] Running "raw_gqi" ("qsiprep.interfaces.dsi_studio.DSIStudioGQIReconstruction"), a CommandLine Interface with command:
+dsi_studio --action=rec --method=4 --check_btable=0 --source=/out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_gqi/sub-101462_dwi_merged.src.gz --threads=1 --num_fiber=3 --record_odf=1 --param0=1.2500 --thread_count=1
+current dir /out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_gqi
+input src /out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_gqi/sub-101462_dwi_merged.src.gz
+split src name sub-101462_dwi_merged.src.gz
+search target /out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_gqi/sub-101462_dwi_merged.src.gz*gqi*.fib.gz
+221023-01:07:09,914 nipype.workflow WARNING:
+	 Storing result file without outputs
+221023-01:07:10,897 nipype.workflow WARNING:
+	 [Node] Error on "qsiprep_wf.single_subject_101462_wf.dwi_preproc_wf.pre_hmc_wf.dwi_qc_wf.raw_gqi" (/out/tmp/qsiprep_wf/single_subject_101462_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_gqi)
+221023-01:07:13,783 nipype.workflow ERROR:
+	 Node raw_gqi failed to run on host c473-041.stampede2.tacc.utexas.edu.
+221023-01:07:16,926 nipype.workflow ERROR:
+	 Saving crash info to /out/qsiprep/sub-101462/log/20221022-215252_a7e5eedc-3e78-41cc-8153-4647fe79e35c/crash-20221023-010716-tg881334-raw_gqi-809d61f1-4220-4541-a3b0-2db746cf91d8.txt
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 67, in run_node
+    result["result"] = node.run(updatehash=updatehash)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 516, in run
+    result = self._run_interface(execute=True)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 635, in _run_interface
+    return self._run_command(execute)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 741, in _run_command
+    result = self._interface.run(cwd=outdir)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/interfaces/base/core.py", line 430, in run
+    outputs = self.aggregate_outputs(runtime)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/interfaces/base/core.py", line 506, in aggregate_outputs
+    predicted_outputs = self._list_outputs()  # Predictions from _list_outputs
+  File "/usr/local/miniconda/lib/python3.7/site-packages/qsiprep/interfaces/dsi_studio.py", line 248, in _list_outputs
+    assert len(results) == 1
+AssertionError
+

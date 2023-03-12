@@ -1,0 +1,246 @@
+221022-21:53:43,988 nipype.workflow INFO:
+	 Running with omp_nthreads=8, nthreads=10
+221022-21:53:44,98 nipype.workflow IMPORTANT:
+	 
+    Running qsiprep version 0.14.3:
+      * BIDS dataset path: /data.
+      * Participant list: ['101482'].
+      * Run identifier: 20221022-215253_bdb6199b-3acb-482a-bc6d-b8254d7616f6.
+    
+221022-21:53:46,591 nipype.utils WARNING:
+	 A newer version (1.8.4) of nipy/nipype is available. You are using 1.6.1
+221022-21:55:03,54 nipype.workflow INFO:
+	 Combining all 1 dwis within the single available session
+221022-21:55:05,297 nipype.workflow INFO:
+	 [{'dwi_series': ['/data/sub-101482/dwi/sub-101482_dwi.nii.gz'], 'fieldmap_info': {'suffix': None}, 'dwi_series_pedir': 'j', 'concatenated_bids_name': 'sub-101482'}]
+221022-21:55:08,614 nipype.workflow IMPORTANT:
+	 Creating dwi processing workflow "dwi_preproc_wf" to produce output sub-101482 (1.07 GB / 36 DWIs). Memory resampled/largemem=1.30/1.37 GB.
+221022-21:55:09,95 nipype.workflow INFO:
+	 Automatically using 5, 5, 5 window for dwidenoise
+221022-21:55:13,840 nipype.workflow INFO:
+	 Using 8 threads in eddy
+221022-21:57:03,166 nipype.workflow IMPORTANT:
+	 Works derived from this qsiprep execution should include the following boilerplate:
+
+
+Preprocessing was performed using *QSIPrep* 0.14.3,
+which is based on *Nipype* 1.6.1
+(@nipype1; @nipype2; RRID:SCR_002502).
+
+Anatomical data preprocessing
+
+: The T1-weighted (T1w) image was corrected for intensity non-uniformity (INU)
+using `N4BiasFieldCorrection` [@n4, ANTs 2.3.1],
+and used as T1w-reference throughout the workflow.
+The T1w-reference was then skull-stripped using `antsBrainExtraction.sh`
+(ANTs 2.3.1), using OASIS as target template.
+Brain surfaces were reconstructed using `recon-all` [FreeSurfer 6.0.1,
+RRID:SCR_001847, @fs_reconall], and the brain mask estimated
+previously was refined with a custom variation of the method to reconcile
+ANTs-derived and FreeSurfer-derived segmentations of the cortical
+gray-matter of Mindboggle [RRID:SCR_002438, @mindboggle].
+Spatial normalization to the ICBM 152 Nonlinear Asymmetrical
+template version 2009c [@mni, RRID:SCR_008796] was performed
+through nonlinear registration with `antsRegistration`
+[ANTs 2.3.1, RRID:SCR_004757, @ants], using
+brain-extracted versions of both T1w volume and template.
+Brain tissue segmentation of cerebrospinal fluid (CSF),
+white-matter (WM) and gray-matter (GM) was performed on
+the brain-extracted T1w using `FAST` [FSL 6.0.3:b862cdd5, RRID:SCR_002823,
+@fsl_fast].
+
+
+Diffusion data preprocessing
+
+: Any images with a b-value less than 100 s/mm^2 were treated as a *b*=0 image. MP-PCA denoising as implemented in MRtrix3's `dwidenoise`[@dwidenoise1] was applied with a 5-voxel window. After MP-PCA, Gibbs unringing was performed using MRtrix3's `mrdegibbs` [@mrdegibbs]. Following unringing, B1 field inhomogeneity was corrected using `dwibiascorrect` from MRtrix3 with the N4 algorithm [@n4]. After B1 bias correction, the mean intensity of the DWI series was adjusted so all the mean intensity of the b=0 images matched across eachseparate DWI scanning sequence.
+
+FSL (version 6.0.3:b862cdd5)'s eddy was used for head motion correction and Eddy current correction [@anderssoneddy]. Eddy was configured with a $q$-space smoothing factor of 10, a total of 5 iterations, and 1000 voxels used to estimate hyperparameters. A linear first level model and a linear second level model were used to characterize Eddy current-related spatial distortion. $q$-space coordinates were forcefully assigned to shells. Field offset was attempted to be separated from subject movement. Shells were aligned post-eddy. Eddy's outlier replacement was run [@eddyrepol]. Data were grouped by slice, only including values from slices determined to contain at least 250 intracerebral voxels. Groups deviating by more than 4 standard deviations from the prediction had their data replaced with imputed values. Final interpolation was performed using the `jac` method.
+
+Several confounding time-series were calculated based on the
+preprocessed DWI: framewise displacement (FD) using the
+implementation in *Nipype* [following the definitions by @power_fd_dvars].
+The head-motion estimates calculated in the correction step were also
+placed within the corresponding confounds file. Slicewise cross correlation
+was also calculated.
+The DWI time-series were resampled to ACPC,
+generating a *preprocessed DWI run in ACPC space* with 1.2mm isotropic voxels.
+
+
+Many internal operations of *QSIPrep* use
+*Nilearn* 0.8.1 [@nilearn, RRID:SCR_001362] and
+*Dipy* [@dipy].
+For more details of the pipeline, see [the section corresponding
+to workflows in *QSIPrep*'s documentation](https://qsiprep.readthedocs.io/en/latest/workflows.html "QSIPrep's documentation").
+
+
+### References
+
+
+221022-21:57:13,902 nipype.workflow WARNING:
+	 Could not generate CITATION.html file:
+pandoc -s --bibliography /usr/local/miniconda/lib/python3.7/site-packages/qsiprep/data/boilerplate.bib --filter pandoc-citeproc /out/qsiprep/logs/CITATION.md -o /out/qsiprep/logs/CITATION.html
+221022-21:57:24,706 nipype.workflow WARNING:
+	 Could not generate CITATION.tex file:
+pandoc -s --bibliography /usr/local/miniconda/lib/python3.7/site-packages/qsiprep/data/boilerplate.bib --natbib /out/qsiprep/logs/CITATION.md -o /out/qsiprep/logs/CITATION.tex
+221022-22:05:46,660 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101482_wf.anat_preproc_wf.output_grid_wf.autobox_template" in "/out/tmp/qsiprep_wf/single_subject_101482_wf/anat_preproc_wf/output_grid_wf/autobox_template".
+221022-22:05:46,704 nipype.workflow INFO:
+	 [Node] Running "autobox_template" ("nipype.interfaces.afni.utils.Autobox"), a CommandLine Interface with command:
+3dAutobox -input /out/tmp/qsiprep_wf/single_subject_101482_wf/anat_preproc_wf/output_grid_wf/autobox_template/mni_1mm_t1w_lps.nii.gz -prefix mni_1mm_t1w_lps_autobox.nii.gz -npad 8
+221022-22:06:42,482 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101482_wf.anat_preproc_wf.output_grid_wf.autobox_template".
+221022-22:07:32,270 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101482_wf.anat_preproc_wf.output_grid_wf.deoblique_autobox" in "/out/tmp/qsiprep_wf/single_subject_101482_wf/anat_preproc_wf/output_grid_wf/deoblique_autobox".
+221022-22:07:32,322 nipype.workflow INFO:
+	 [Node] Running "deoblique_autobox" ("nipype.interfaces.afni.preprocess.Warp"), a CommandLine Interface with command:
+3dWarp -deoblique -prefix mni_1mm_t1w_lps_autobox_warp.nii.gz /out/tmp/qsiprep_wf/single_subject_101482_wf/anat_preproc_wf/output_grid_wf/deoblique_autobox/mni_1mm_t1w_lps_autobox.nii.gz
+221022-22:07:40,824 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101482_wf.anat_preproc_wf.output_grid_wf.deoblique_autobox".
+221022-22:08:55,236 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101482_wf.anat_preproc_wf.output_grid_wf.resample_to_voxel_size" in "/out/tmp/qsiprep_wf/single_subject_101482_wf/anat_preproc_wf/output_grid_wf/resample_to_voxel_size".
+221022-22:08:55,296 nipype.workflow INFO:
+	 [Node] Running "resample_to_voxel_size" ("nipype.interfaces.afni.utils.Resample"), a CommandLine Interface with command:
+3dresample -prefix mni_1mm_t1w_lps_autobox_warp_resample.nii.gz -dxyz 1.200000 1.200000 1.200000 -inset /out/tmp/qsiprep_wf/single_subject_101482_wf/anat_preproc_wf/output_grid_wf/resample_to_voxel_size/mni_1mm_t1w_lps_autobox_warp.nii.gz
+221022-22:08:59,741 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101482_wf.anat_preproc_wf.output_grid_wf.resample_to_voxel_size".
+221022-22:10:30,856 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101482_wf.bidssrc" in "/out/tmp/qsiprep_wf/single_subject_101482_wf/bidssrc".
+221022-22:10:33,959 nipype.workflow INFO:
+	 [Node] Running "bidssrc" ("qsiprep.interfaces.bids.BIDSDataGrabber")
+221022-22:10:34,843 nipype.interface WARNING:
+	 No 't2w' images found for sub-<undefined>
+221022-22:10:34,844 nipype.interface WARNING:
+	 No 'flair' images found for sub-<undefined>
+221022-22:10:34,845 nipype.interface WARNING:
+	 No 'fmap' images found for sub-<undefined>
+221022-22:10:34,846 nipype.interface WARNING:
+	 No 'sbref' images found for sub-<undefined>
+221022-22:10:35,271 nipype.interface WARNING:
+	 No 'roi' images found for sub-<undefined>
+221022-22:10:39,852 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101482_wf.bidssrc".
+221022-22:10:42,664 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101482_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.conform_dwis01" in "/out/tmp/qsiprep_wf/single_subject_101482_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/conform_dwis01".
+221022-22:10:45,968 nipype.workflow INFO:
+	 [Node] Running "conform_dwis01" ("qsiprep.interfaces.images.ConformDwi")
+221022-22:12:01,896 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101482_wf.anat_preproc_wf.anat_template_wf.t1_template_dimensions" in "/out/tmp/qsiprep_wf/single_subject_101482_wf/anat_preproc_wf/anat_template_wf/t1_template_dimensions".
+221022-22:13:19,333 nipype.utils WARNING:
+	 A newer version (1.8.4) of nipy/nipype is available. You are using 1.6.1
+221022-22:15:51,120 nipype.workflow INFO:
+	 [Node] Running "t1_template_dimensions" ("qsiprep.niworkflows.interfaces.images.TemplateDimensions")
+221022-22:16:11,768 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101482_wf.anat_preproc_wf.anat_template_wf.t1_template_dimensions".
+221022-22:16:51,51 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101482_wf.anat_preproc_wf.anat_derivatives_wf.t1_name" in "/out/tmp/qsiprep_wf/single_subject_101482_wf/anat_preproc_wf/anat_derivatives_wf/t1_name".
+221022-22:17:01,352 nipype.workflow INFO:
+	 [Node] Running "t1_name" ("nipype.interfaces.utility.wrappers.Function")
+221022-22:17:01,601 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101482_wf.anat_preproc_wf.anat_derivatives_wf.t1_name".
+221022-22:19:33,712 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101482_wf.anat_preproc_wf.anat_template_wf.t1_conform" in "/out/tmp/qsiprep_wf/single_subject_101482_wf/anat_preproc_wf/anat_template_wf/t1_conform".
+221022-22:19:36,870 nipype.workflow INFO:
+	 [Node] Setting-up "_t1_conform0" in "/out/tmp/qsiprep_wf/single_subject_101482_wf/anat_preproc_wf/anat_template_wf/t1_conform/mapflow/_t1_conform0".
+221022-22:19:38,667 nipype.workflow INFO:
+	 [Node] Running "_t1_conform0" ("qsiprep.interfaces.images.Conform")
+221022-22:21:44,999 nipype.interface WARNING:
+	 Removing obliquity from image affine
+221022-22:30:33,791 nipype.interface INFO:
+	 Not applying reorientation to /data/sub-101482/dwi/sub-101482_dwi.nii.gz: already in LAS
+221022-22:30:42,271 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101482_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.conform_dwis01".
+221022-22:31:27,135 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101482_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.conformed_images" in "/out/tmp/qsiprep_wf/single_subject_101482_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/conformed_images".
+221022-22:31:27,426 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101482_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.conformed_raw_images" in "/out/tmp/qsiprep_wf/single_subject_101482_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/conformed_raw_images".
+221022-22:31:27,716 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101482_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.conformed_bvals" in "/out/tmp/qsiprep_wf/single_subject_101482_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/conformed_bvals".
+221022-22:31:27,956 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101482_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.conformed_bvecs" in "/out/tmp/qsiprep_wf/single_subject_101482_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/conformed_bvecs".
+221022-22:31:28,266 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101482_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.conformation_reports" in "/out/tmp/qsiprep_wf/single_subject_101482_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/conformation_reports".
+221022-22:34:46,191 nipype.workflow INFO:
+	 [Node] Running "conformed_bvecs" ("nipype.interfaces.utility.base.Merge")
+221022-22:34:46,232 nipype.workflow INFO:
+	 [Node] Running "conformation_reports" ("nipype.interfaces.utility.base.Merge")
+221022-22:34:49,746 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101482_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.conformed_bvecs".
+221022-22:34:50,37 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101482_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.conformation_reports".
+221022-22:34:51,533 nipype.workflow INFO:
+	 [Node] Running "conformed_raw_images" ("nipype.interfaces.utility.base.Merge")
+221022-22:34:52,113 nipype.workflow INFO:
+	 [Node] Running "conformed_images" ("nipype.interfaces.utility.base.Merge")
+221022-22:34:54,388 nipype.workflow INFO:
+	 [Node] Running "conformed_bvals" ("nipype.interfaces.utility.base.Merge")
+221022-22:34:56,64 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101482_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.conformed_raw_images".
+221022-22:34:56,613 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101482_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.conformed_images".
+221022-22:34:57,950 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101482_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.conformed_bvals".
+221022-22:35:29,721 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101482_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.raw_merge" in "/out/tmp/qsiprep_wf/single_subject_101482_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/raw_merge".
+221022-22:35:32,494 nipype.workflow INFO:
+	 [Node] Running "raw_merge" ("qsiprep.interfaces.nilearn.Merge")
+221022-22:35:32,611 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101482_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.merge_dwis" in "/out/tmp/qsiprep_wf/single_subject_101482_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/merge_dwis".
+221022-22:35:38,35 nipype.workflow INFO:
+	 [Node] Running "merge_dwis" ("qsiprep.interfaces.dwi_merge.MergeDWIs")
+221022-22:36:24,164 nipype.workflow INFO:
+	 [Node] Finished "_t1_conform0".
+221022-22:36:26,17 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101482_wf.anat_preproc_wf.anat_template_wf.t1_conform".
+221022-22:37:22,912 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101482_wf.anat_preproc_wf.skullstrip_wf.t1_skull_strip" in "/out/tmp/qsiprep_wf/single_subject_101482_wf/anat_preproc_wf/skullstrip_wf/t1_skull_strip".
+221022-22:40:38,195 nipype.workflow INFO:
+	 [Node] Running "t1_skull_strip" ("nipype.interfaces.ants.segmentation.BrainExtraction"), a CommandLine Interface with command:
+antsBrainExtraction.sh -a /out/tmp/qsiprep_wf/single_subject_101482_wf/anat_preproc_wf/anat_template_wf/t1_conform/mapflow/_t1_conform0/sub-101482_T1w_lps.nii.gz -m /out/tmp/qsiprep_wf/single_subject_101482_wf/anat_preproc_wf/skullstrip_wf/t1_skull_strip/tpl-OASIS30ANTs_res-01_class-brainmask_probtissue.nii.gz -e /niworkflows_data/tpl-OASIS30ANTs/tpl-OASIS30ANTs_res-01_T1w.nii.gz -d 3 -f /niworkflows_data/tpl-OASIS30ANTs/tpl-OASIS30ANTs_res-01_label-BrainCerebellumExtraction_roi.nii.gz -s nii.gz -k 1 -o highres001_ -q 1 -u 1
+221022-22:42:00,293 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101482_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.merge_dwis".
+221022-22:42:33,302 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101482_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.merged_denoise.denoiser" in "/out/tmp/qsiprep_wf/single_subject_101482_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/merged_denoise/denoiser".
+221022-22:42:42,893 nipype.workflow INFO:
+	 [Node] Running "denoiser" ("qsiprep.interfaces.mrtrix.DWIDenoise"), a CommandLine Interface with command:
+dwidenoise -extent 5,5,5 -noise sub-101482_dwi_noise.nii.gz /data/sub-101482/dwi/sub-101482_dwi.nii.gz sub-101482_dwi_denoised.nii.gz
+221022-23:12:20,497 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101482_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.raw_merge".
+221022-23:12:54,694 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101482_wf.dwi_preproc_wf.test_pre_hmc_connect" in "/out/tmp/qsiprep_wf/single_subject_101482_wf/dwi_preproc_wf/test_pre_hmc_connect".
+221022-23:12:58,123 nipype.workflow INFO:
+	 [Node] Running "test_pre_hmc_connect" ("qsiprep.interfaces.utils.TestInput")
+221022-23:12:58,708 nipype.workflow WARNING:
+	 Storing result file without outputs
+221022-23:12:59,718 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101482_wf.dwi_preproc_wf.test_pre_hmc_connect".
+221022-23:13:27,897 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101482_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.dwi_qc_wf.raw_src" in "/out/tmp/qsiprep_wf/single_subject_101482_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src".
+221022-23:13:36,706 nipype.workflow INFO:
+	 [Node] Running "raw_src" ("qsiprep.interfaces.dsi_studio.DSIStudioCreateSrc"), a CommandLine Interface with command:
+dsi_studio --action=src  --bval=/data/sub-101482/dwi/sub-101482_dwi.bval --bvec=/data/sub-101482/dwi/sub-101482_dwi.bvec --source=/out/tmp/qsiprep_wf/single_subject_101482_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/raw_merge/sub-101482_dwi_merged.nii.gz --threads=1 --output=/out/tmp/qsiprep_wf/single_subject_101482_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src/sub-101482_dwi_merged.src.gz
+221023-00:57:36,568 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101482_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.dwi_qc_wf.raw_src".
+221023-00:58:40,186 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101482_wf.dwi_preproc_wf.pre_hmc_wf.dwi_qc_wf.raw_src" in "/out/tmp/qsiprep_wf/single_subject_101482_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_src".
+221023-00:58:55,116 nipype.workflow INFO:
+	 [Node] Running "raw_src" ("qsiprep.interfaces.dsi_studio.DSIStudioCreateSrc"), a CommandLine Interface with command:
+dsi_studio --action=src  --bval=/data/sub-101482/dwi/sub-101482_dwi.bval --bvec=/data/sub-101482/dwi/sub-101482_dwi.bvec --source=/out/tmp/qsiprep_wf/single_subject_101482_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/raw_merge/sub-101482_dwi_merged.nii.gz --threads=1 --output=/out/tmp/qsiprep_wf/single_subject_101482_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_src/sub-101482_dwi_merged.src.gz
+221023-02:57:34,348 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101482_wf.dwi_preproc_wf.pre_hmc_wf.dwi_qc_wf.raw_src".
+221023-02:58:34,142 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101482_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.dwi_qc_wf.raw_src_qc" in "/out/tmp/qsiprep_wf/single_subject_101482_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src_qc".
+221023-02:58:42,613 nipype.workflow INFO:
+	 [Node] Running "raw_src_qc" ("qsiprep.interfaces.dsi_studio.DSIStudioSrcQC")
+221023-03:12:38,543 nipype.interface INFO:
+	 DSI Studio Sep 16 2021, Fang-Cheng Yeh
+source=/out/tmp/qsiprep_wf/single_subject_101482_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src_qc/sub-101482_dwi_merged.src.gz
+action=qc
+checking /out/tmp/qsiprep_wf/single_subject_101482_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src_qc/sub-101482_dwi_merged.src.gz
+
+221023-03:12:41,729 nipype.workflow INFO:
+	 [Node] Finished "qsiprep_wf.single_subject_101482_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.dwi_qc_wf.raw_src_qc".
+221023-03:13:39,283 nipype.workflow INFO:
+	 [Node] Setting-up "qsiprep_wf.single_subject_101482_wf.dwi_preproc_wf.pre_hmc_wf.merge_and_denoise_wf.dwi_qc_wf.raw_gqi" in "/out/tmp/qsiprep_wf/single_subject_101482_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_gqi".
+221023-03:13:45,343 nipype.workflow INFO:
+	 [Node] Running "raw_gqi" ("qsiprep.interfaces.dsi_studio.DSIStudioGQIReconstruction"), a CommandLine Interface with command:
+dsi_studio --action=rec --method=4 --check_btable=0 --source=/out/tmp/qsiprep_wf/single_subject_101482_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_gqi/sub-101482_dwi_merged.src.gz --threads=1 --num_fiber=3 --record_odf=1 --param0=1.2500 --thread_count=1

@@ -1,0 +1,16 @@
+Launcher: Setup complete.
+
+------------- SUMMARY ---------------
+   Number of hosts:    2
+   Working directory:  /work2/08834/tg881334/stampede2/CHA_preproc/IMP_shell_scripts/IMP_MAIN_REAL_every_preprocessing
+   Processes per host: 2
+   Total processes:    4
+   Total jobs:         7
+   Scheduling method:  dynamic
+
+-------------------------------------
+Launcher: Starting parallel tasks...
+Launcher: Task 2 running job 1 on c506-032.stampede2.tacc.utexas.edu (/work2/08834/tg881334/stampede2/CHA_preproc/IMP_shell_scripts/IMP_MAIN_REAL_every_preprocessing/step4_shell_outputs/run_this_test/run_shell_sub-200107.sh >> /work2/08834/tg881334/stampede2/CHA_preproc/IMP_shell_scripts/IMP_MAIN_REAL_every_preprocessing/step4_shell_outputs/log_outputs/output-$LAUNCHER_TSK_ID)
+Launcher: Task 3 running job 2 on c506-032.stampede2.tacc.utexas.edu (/work2/08834/tg881334/stampede2/CHA_preproc/IMP_shell_scripts/IMP_MAIN_REAL_every_preprocessing/step4_shell_outputs/run_this_test/run_shell_sub-200079.sh >> /work2/08834/tg881334/stampede2/CHA_preproc/IMP_shell_scripts/IMP_MAIN_REAL_every_preprocessing/step4_shell_outputs/log_outputs/output-$LAUNCHER_TSK_ID)
+Launcher: Task 0 running job 3 on c506-031.stampede2.tacc.utexas.edu (/work2/08834/tg881334/stampede2/CHA_preproc/IMP_shell_scripts/IMP_MAIN_REAL_every_preprocessing/step4_shell_outputs/run_this_test/run_shell_sub-131294.sh >> /work2/08834/tg881334/stampede2/CHA_preproc/IMP_shell_scripts/IMP_MAIN_REAL_every_preprocessing/step4_shell_outputs/log_outputs/output-$LAUNCHER_TSK_ID)
+Launcher: Task 1 running job 4 on c506-031.stampede2.tacc.utexas.edu (/work2/08834/tg881334/stampede2/CHA_preproc/IMP_shell_scripts/IMP_MAIN_REAL_every_preprocessing/step4_shell_outputs/run_this_test/run_shell_sub-210011.sh >> /work2/08834/tg881334/stampede2/CHA_preproc/IMP_shell_scripts/IMP_MAIN_REAL_every_preprocessing/step4_shell_outputs/log_outputs/output-$LAUNCHER_TSK_ID)

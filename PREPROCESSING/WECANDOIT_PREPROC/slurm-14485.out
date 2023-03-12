@@ -1,0 +1,5 @@
+/storage/bigdata/WECANDOIT/1.raw_test_jan/A101/study_1_20220224
+/storage/bigdata/WECANDOIT/2.extracted_inputs_test_jan/A101
+/var/lib/slurm-llnl/slurmd/job14485/slurm_script: line 70: mrconvert: command not found
+/var/lib/slurm-llnl/slurmd/job14485/slurm_script: line 73: dcm2niix: command not found
+

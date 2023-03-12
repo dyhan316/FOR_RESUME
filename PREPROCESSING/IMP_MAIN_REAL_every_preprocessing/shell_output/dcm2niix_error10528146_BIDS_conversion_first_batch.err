@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/work2/08834/tg881334/stampede2/CHA_preproc/IMP_shell_scripts/IMP_MAIN_REAL_every_preprocessing/REAL_step3_group_by_50.py", line 62, in <module>
+    pdb.set_trace()
+  File "/home1/08834/tg881334/logout/envs/CHA_preproc/lib/python3.10/bdb.py", line 94, in trace_dispatch
+    return self.dispatch_return(frame, arg)
+  File "/home1/08834/tg881334/logout/envs/CHA_preproc/lib/python3.10/bdb.py", line 156, in dispatch_return
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit

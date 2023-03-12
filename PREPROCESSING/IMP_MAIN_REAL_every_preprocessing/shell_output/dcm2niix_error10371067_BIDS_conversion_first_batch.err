@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "REAL_step1_dcm2niix_BIDS.py", line 8, in <module>
+    infant_pd, adult_pd = get_info()()
+  File "/work2/08834/tg881334/stampede2/CHA_preproc/IMP_shell_scripts/IMP_MAIN_REAL_every_preprocessing/REAL_step0_get_infant_adult_df.py", line 88, in __call__
+    sep_missing = partition_missing(get_year_file(year))
+  File "/work2/08834/tg881334/stampede2/CHA_preproc/IMP_shell_scripts/IMP_MAIN_REAL_every_preprocessing/REAL_step0_get_infant_adult_df.py", line 24, in get_year_file
+    total_df = pd.read_excel(file_dir)
+  File "/opt/apps/intel18/python2/2.7.15/lib/python2.7/site-packages/pandas/util/_decorators.py", line 188, in wrapper
+    return func(*args, **kwargs)
+  File "/opt/apps/intel18/python2/2.7.15/lib/python2.7/site-packages/pandas/util/_decorators.py", line 188, in wrapper
+    return func(*args, **kwargs)
+  File "/opt/apps/intel18/python2/2.7.15/lib/python2.7/site-packages/pandas/io/excel.py", line 350, in read_excel
+    io = ExcelFile(io, engine=engine)
+  File "/opt/apps/intel18/python2/2.7.15/lib/python2.7/site-packages/pandas/io/excel.py", line 653, in __init__
+    self._reader = self._engines[engine](self._io)
+  File "/opt/apps/intel18/python2/2.7.15/lib/python2.7/site-packages/pandas/io/excel.py", line 393, in __init__
+    raise ImportError(err_msg)
+ImportError: Install xlrd >= 1.0.0 for Excel support

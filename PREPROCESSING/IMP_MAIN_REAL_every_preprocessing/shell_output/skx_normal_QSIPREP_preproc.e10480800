@@ -1,0 +1,541 @@
+exception calling callback for <Future at 0x2b9adf0e77b8 state=finished raised FileNotFoundError>
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 67, in run_node
+    result["result"] = node.run(updatehash=updatehash)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 486, in run
+    self._get_hashval()
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 538, in _get_hashval
+    self._get_inputs()
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 609, in _get_inputs
+    self.set_input(key, deepcopy(output_value))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 302, in set_input
+    setattr(self.inputs, parameter, deepcopy(val))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/interfaces/base/traits_extension.py", line 330, in validate
+    value = super(File, self).validate(objekt, name, value, return_pathlike=True)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/interfaces/base/traits_extension.py", line 135, in validate
+    self.error(objekt, name, str(value))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/traits/trait_handlers.py", line 172, in error
+    value )
+traits.trait_errors.TraitError: The 'src_file' trait of a _DSIStudioSrcQCInputSpec instance must be a pathlike object or string representing an existing file, but a value of '/out/tmp/qsiprep_wf/single_subject_121163_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_src/sub-121163_dwi_merged.src.gz' <class 'str'> was specified.
+
+Error setting node input:
+Node: raw_src_qc
+input: src_file
+results_file: /out/tmp/qsiprep_wf/single_subject_121163_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_src/result_raw_src.pklz
+value: /out/tmp/qsiprep_wf/single_subject_121163_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_src/sub-121163_dwi_merged.src.gz
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/process.py", line 232, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 70, in run_node
+    result["result"] = node.result
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 217, in result
+    op.join(self.output_dir(), "result_%s.pklz" % self.name)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/utils.py", line 291, in load_resultfile
+    raise FileNotFoundError(results_file)
+FileNotFoundError: /out/tmp/qsiprep_wf/single_subject_121163_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_src_qc/result_raw_src_qc.pklz
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 324, in _invoke_callbacks
+    callback(self)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 159, in _async_callback
+    result = args.result()
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 425, in result
+    return self.__get_result()
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 384, in __get_result
+    raise self._exception
+FileNotFoundError: /out/tmp/qsiprep_wf/single_subject_121163_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_src_qc/result_raw_src_qc.pklz
+exception calling callback for <Future at 0x2b9adf0e7908 state=finished raised FileNotFoundError>
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 67, in run_node
+    result["result"] = node.run(updatehash=updatehash)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 486, in run
+    self._get_hashval()
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 538, in _get_hashval
+    self._get_inputs()
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 609, in _get_inputs
+    self.set_input(key, deepcopy(output_value))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 302, in set_input
+    setattr(self.inputs, parameter, deepcopy(val))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/interfaces/base/traits_extension.py", line 330, in validate
+    value = super(File, self).validate(objekt, name, value, return_pathlike=True)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/interfaces/base/traits_extension.py", line 135, in validate
+    self.error(objekt, name, str(value))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/traits/trait_handlers.py", line 172, in error
+    value )
+traits.trait_errors.TraitError: The 'input_src_file' trait of a DSIStudioGQIReconstructionInputSpec instance must be a pathlike object or string representing an existing file, but a value of '/out/tmp/qsiprep_wf/single_subject_121163_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_src/sub-121163_dwi_merged.src.gz' <class 'str'> was specified.
+
+Error setting node input:
+Node: raw_gqi
+input: input_src_file
+results_file: /out/tmp/qsiprep_wf/single_subject_121163_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_src/result_raw_src.pklz
+value: /out/tmp/qsiprep_wf/single_subject_121163_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_src/sub-121163_dwi_merged.src.gz
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/process.py", line 232, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 70, in run_node
+    result["result"] = node.result
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 217, in result
+    op.join(self.output_dir(), "result_%s.pklz" % self.name)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/utils.py", line 291, in load_resultfile
+    raise FileNotFoundError(results_file)
+FileNotFoundError: /out/tmp/qsiprep_wf/single_subject_121163_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_gqi/result_raw_gqi.pklz
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 324, in _invoke_callbacks
+    callback(self)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 159, in _async_callback
+    result = args.result()
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 425, in result
+    return self.__get_result()
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 384, in __get_result
+    raise self._exception
+FileNotFoundError: /out/tmp/qsiprep_wf/single_subject_121163_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_gqi/result_raw_gqi.pklz
+exception calling callback for <Future at 0x2b9adef33208 state=finished raised FileNotFoundError>
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 67, in run_node
+    result["result"] = node.run(updatehash=updatehash)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 486, in run
+    self._get_hashval()
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 538, in _get_hashval
+    self._get_inputs()
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 609, in _get_inputs
+    self.set_input(key, deepcopy(output_value))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 302, in set_input
+    setattr(self.inputs, parameter, deepcopy(val))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/interfaces/base/traits_extension.py", line 330, in validate
+    value = super(File, self).validate(objekt, name, value, return_pathlike=True)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/interfaces/base/traits_extension.py", line 135, in validate
+    self.error(objekt, name, str(value))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/traits/trait_handlers.py", line 172, in error
+    value )
+traits.trait_errors.TraitError: The 'input_src_file' trait of a DSIStudioGQIReconstructionInputSpec instance must be a pathlike object or string representing an existing file, but a value of '/out/tmp/qsiprep_wf/single_subject_170493_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src/sub-170493_dwi_merged.src.gz' <class 'str'> was specified.
+
+Error setting node input:
+Node: raw_gqi
+input: input_src_file
+results_file: /out/tmp/qsiprep_wf/single_subject_170493_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src/result_raw_src.pklz
+value: /out/tmp/qsiprep_wf/single_subject_170493_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src/sub-170493_dwi_merged.src.gz
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/process.py", line 232, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 70, in run_node
+    result["result"] = node.result
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 217, in result
+    op.join(self.output_dir(), "result_%s.pklz" % self.name)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/utils.py", line 291, in load_resultfile
+    raise FileNotFoundError(results_file)
+FileNotFoundError: /out/tmp/qsiprep_wf/single_subject_170493_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_gqi/result_raw_gqi.pklz
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 324, in _invoke_callbacks
+    callback(self)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 159, in _async_callback
+    result = args.result()
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 425, in result
+    return self.__get_result()
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 384, in __get_result
+    raise self._exception
+FileNotFoundError: /out/tmp/qsiprep_wf/single_subject_170493_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_gqi/result_raw_gqi.pklz
+exception calling callback for <Future at 0x2b9adef33908 state=finished raised FileNotFoundError>
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 67, in run_node
+    result["result"] = node.run(updatehash=updatehash)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 486, in run
+    self._get_hashval()
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 538, in _get_hashval
+    self._get_inputs()
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 609, in _get_inputs
+    self.set_input(key, deepcopy(output_value))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 302, in set_input
+    setattr(self.inputs, parameter, deepcopy(val))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/interfaces/base/traits_extension.py", line 330, in validate
+    value = super(File, self).validate(objekt, name, value, return_pathlike=True)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/interfaces/base/traits_extension.py", line 135, in validate
+    self.error(objekt, name, str(value))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/traits/trait_handlers.py", line 172, in error
+    value )
+traits.trait_errors.TraitError: The 'src_file' trait of a _DSIStudioSrcQCInputSpec instance must be a pathlike object or string representing an existing file, but a value of '/out/tmp/qsiprep_wf/single_subject_180310_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_src/sub-180310_dwi_merged.src.gz' <class 'str'> was specified.
+
+Error setting node input:
+Node: raw_src_qc
+input: src_file
+results_file: /out/tmp/qsiprep_wf/single_subject_180310_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_src/result_raw_src.pklz
+value: /out/tmp/qsiprep_wf/single_subject_180310_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_src/sub-180310_dwi_merged.src.gz
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/process.py", line 232, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 70, in run_node
+    result["result"] = node.result
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 217, in result
+    op.join(self.output_dir(), "result_%s.pklz" % self.name)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/utils.py", line 291, in load_resultfile
+    raise FileNotFoundError(results_file)
+FileNotFoundError: /out/tmp/qsiprep_wf/single_subject_180310_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_src_qc/result_raw_src_qc.pklz
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 324, in _invoke_callbacks
+    callback(self)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 159, in _async_callback
+    result = args.result()
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 425, in result
+    return self.__get_result()
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 384, in __get_result
+    raise self._exception
+FileNotFoundError: /out/tmp/qsiprep_wf/single_subject_180310_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_src_qc/result_raw_src_qc.pklz
+exception calling callback for <Future at 0x2b9adef2c898 state=finished raised FileNotFoundError>
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 67, in run_node
+    result["result"] = node.run(updatehash=updatehash)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 486, in run
+    self._get_hashval()
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 538, in _get_hashval
+    self._get_inputs()
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 609, in _get_inputs
+    self.set_input(key, deepcopy(output_value))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 302, in set_input
+    setattr(self.inputs, parameter, deepcopy(val))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/interfaces/base/traits_extension.py", line 330, in validate
+    value = super(File, self).validate(objekt, name, value, return_pathlike=True)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/interfaces/base/traits_extension.py", line 135, in validate
+    self.error(objekt, name, str(value))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/traits/trait_handlers.py", line 172, in error
+    value )
+traits.trait_errors.TraitError: The 'input_src_file' trait of a DSIStudioGQIReconstructionInputSpec instance must be a pathlike object or string representing an existing file, but a value of '/out/tmp/qsiprep_wf/single_subject_160674_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src/sub-160674_dwi_merged.src.gz' <class 'str'> was specified.
+
+Error setting node input:
+Node: raw_gqi
+input: input_src_file
+results_file: /out/tmp/qsiprep_wf/single_subject_160674_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src/result_raw_src.pklz
+value: /out/tmp/qsiprep_wf/single_subject_160674_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src/sub-160674_dwi_merged.src.gz
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/process.py", line 232, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 70, in run_node
+    result["result"] = node.result
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 217, in result
+    op.join(self.output_dir(), "result_%s.pklz" % self.name)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/utils.py", line 291, in load_resultfile
+    raise FileNotFoundError(results_file)
+FileNotFoundError: /out/tmp/qsiprep_wf/single_subject_160674_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_gqi/result_raw_gqi.pklz
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 324, in _invoke_callbacks
+    callback(self)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 159, in _async_callback
+    result = args.result()
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 425, in result
+    return self.__get_result()
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 384, in __get_result
+    raise self._exception
+FileNotFoundError: /out/tmp/qsiprep_wf/single_subject_160674_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_gqi/result_raw_gqi.pklz
+exception calling callback for <Future at 0x2b9adef2c7b8 state=finished raised FileNotFoundError>
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 67, in run_node
+    result["result"] = node.run(updatehash=updatehash)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 486, in run
+    self._get_hashval()
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 538, in _get_hashval
+    self._get_inputs()
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 609, in _get_inputs
+    self.set_input(key, deepcopy(output_value))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 302, in set_input
+    setattr(self.inputs, parameter, deepcopy(val))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/interfaces/base/traits_extension.py", line 330, in validate
+    value = super(File, self).validate(objekt, name, value, return_pathlike=True)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/interfaces/base/traits_extension.py", line 135, in validate
+    self.error(objekt, name, str(value))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/traits/trait_handlers.py", line 172, in error
+    value )
+traits.trait_errors.TraitError: The 'src_file' trait of a _DSIStudioSrcQCInputSpec instance must be a pathlike object or string representing an existing file, but a value of '/out/tmp/qsiprep_wf/single_subject_160674_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src/sub-160674_dwi_merged.src.gz' <class 'str'> was specified.
+
+Error setting node input:
+Node: raw_src_qc
+input: src_file
+results_file: /out/tmp/qsiprep_wf/single_subject_160674_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src/result_raw_src.pklz
+value: /out/tmp/qsiprep_wf/single_subject_160674_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src/sub-160674_dwi_merged.src.gz
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/process.py", line 232, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 70, in run_node
+    result["result"] = node.result
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 217, in result
+    op.join(self.output_dir(), "result_%s.pklz" % self.name)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/utils.py", line 291, in load_resultfile
+    raise FileNotFoundError(results_file)
+FileNotFoundError: /out/tmp/qsiprep_wf/single_subject_160674_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src_qc/result_raw_src_qc.pklz
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 324, in _invoke_callbacks
+    callback(self)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 159, in _async_callback
+    result = args.result()
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 425, in result
+    return self.__get_result()
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 384, in __get_result
+    raise self._exception
+FileNotFoundError: /out/tmp/qsiprep_wf/single_subject_160674_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src_qc/result_raw_src_qc.pklz
+exception calling callback for <Future at 0x2b9adef33080 state=finished raised FileNotFoundError>
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 67, in run_node
+    result["result"] = node.run(updatehash=updatehash)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 486, in run
+    self._get_hashval()
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 538, in _get_hashval
+    self._get_inputs()
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 609, in _get_inputs
+    self.set_input(key, deepcopy(output_value))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 302, in set_input
+    setattr(self.inputs, parameter, deepcopy(val))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/interfaces/base/traits_extension.py", line 330, in validate
+    value = super(File, self).validate(objekt, name, value, return_pathlike=True)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/interfaces/base/traits_extension.py", line 135, in validate
+    self.error(objekt, name, str(value))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/traits/trait_handlers.py", line 172, in error
+    value )
+traits.trait_errors.TraitError: The 'src_file' trait of a _DSIStudioSrcQCInputSpec instance must be a pathlike object or string representing an existing file, but a value of '/out/tmp/qsiprep_wf/single_subject_170493_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src/sub-170493_dwi_merged.src.gz' <class 'str'> was specified.
+
+Error setting node input:
+Node: raw_src_qc
+input: src_file
+results_file: /out/tmp/qsiprep_wf/single_subject_170493_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src/result_raw_src.pklz
+value: /out/tmp/qsiprep_wf/single_subject_170493_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src/sub-170493_dwi_merged.src.gz
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/process.py", line 232, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 70, in run_node
+    result["result"] = node.result
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 217, in result
+    op.join(self.output_dir(), "result_%s.pklz" % self.name)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/utils.py", line 291, in load_resultfile
+    raise FileNotFoundError(results_file)
+FileNotFoundError: /out/tmp/qsiprep_wf/single_subject_170493_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src_qc/result_raw_src_qc.pklz
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 324, in _invoke_callbacks
+    callback(self)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 159, in _async_callback
+    result = args.result()
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 425, in result
+    return self.__get_result()
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 384, in __get_result
+    raise self._exception
+FileNotFoundError: /out/tmp/qsiprep_wf/single_subject_170493_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src_qc/result_raw_src_qc.pklz
+exception calling callback for <Future at 0x2b9ade8522e8 state=finished raised FileNotFoundError>
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 67, in run_node
+    result["result"] = node.run(updatehash=updatehash)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 486, in run
+    self._get_hashval()
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 538, in _get_hashval
+    self._get_inputs()
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 609, in _get_inputs
+    self.set_input(key, deepcopy(output_value))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 302, in set_input
+    setattr(self.inputs, parameter, deepcopy(val))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/interfaces/base/traits_extension.py", line 330, in validate
+    value = super(File, self).validate(objekt, name, value, return_pathlike=True)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/interfaces/base/traits_extension.py", line 135, in validate
+    self.error(objekt, name, str(value))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/traits/trait_handlers.py", line 172, in error
+    value )
+traits.trait_errors.TraitError: The 'input_src_file' trait of a DSIStudioGQIReconstructionInputSpec instance must be a pathlike object or string representing an existing file, but a value of '/out/tmp/qsiprep_wf/single_subject_180321_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src/sub-180321_dwi_merged.src.gz' <class 'str'> was specified.
+
+Error setting node input:
+Node: raw_gqi
+input: input_src_file
+results_file: /out/tmp/qsiprep_wf/single_subject_180321_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src/result_raw_src.pklz
+value: /out/tmp/qsiprep_wf/single_subject_180321_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src/sub-180321_dwi_merged.src.gz
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/process.py", line 232, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 70, in run_node
+    result["result"] = node.result
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 217, in result
+    op.join(self.output_dir(), "result_%s.pklz" % self.name)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/utils.py", line 291, in load_resultfile
+    raise FileNotFoundError(results_file)
+FileNotFoundError: /out/tmp/qsiprep_wf/single_subject_180321_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_gqi/result_raw_gqi.pklz
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 324, in _invoke_callbacks
+    callback(self)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 159, in _async_callback
+    result = args.result()
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 425, in result
+    return self.__get_result()
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 384, in __get_result
+    raise self._exception
+FileNotFoundError: /out/tmp/qsiprep_wf/single_subject_180321_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_gqi/result_raw_gqi.pklz
+exception calling callback for <Future at 0x2b9adef33a90 state=finished raised FileNotFoundError>
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 67, in run_node
+    result["result"] = node.run(updatehash=updatehash)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 486, in run
+    self._get_hashval()
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 538, in _get_hashval
+    self._get_inputs()
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 609, in _get_inputs
+    self.set_input(key, deepcopy(output_value))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 302, in set_input
+    setattr(self.inputs, parameter, deepcopy(val))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/interfaces/base/traits_extension.py", line 330, in validate
+    value = super(File, self).validate(objekt, name, value, return_pathlike=True)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/interfaces/base/traits_extension.py", line 135, in validate
+    self.error(objekt, name, str(value))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/traits/trait_handlers.py", line 172, in error
+    value )
+traits.trait_errors.TraitError: The 'input_src_file' trait of a DSIStudioGQIReconstructionInputSpec instance must be a pathlike object or string representing an existing file, but a value of '/out/tmp/qsiprep_wf/single_subject_180310_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_src/sub-180310_dwi_merged.src.gz' <class 'str'> was specified.
+
+Error setting node input:
+Node: raw_gqi
+input: input_src_file
+results_file: /out/tmp/qsiprep_wf/single_subject_180310_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_src/result_raw_src.pklz
+value: /out/tmp/qsiprep_wf/single_subject_180310_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_src/sub-180310_dwi_merged.src.gz
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/process.py", line 232, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 70, in run_node
+    result["result"] = node.result
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 217, in result
+    op.join(self.output_dir(), "result_%s.pklz" % self.name)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/utils.py", line 291, in load_resultfile
+    raise FileNotFoundError(results_file)
+FileNotFoundError: /out/tmp/qsiprep_wf/single_subject_180310_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_gqi/result_raw_gqi.pklz
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 324, in _invoke_callbacks
+    callback(self)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 159, in _async_callback
+    result = args.result()
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 425, in result
+    return self.__get_result()
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 384, in __get_result
+    raise self._exception
+FileNotFoundError: /out/tmp/qsiprep_wf/single_subject_180310_wf/dwi_preproc_wf/pre_hmc_wf/dwi_qc_wf/raw_gqi/result_raw_gqi.pklz
+exception calling callback for <Future at 0x2b9ade852198 state=finished raised FileNotFoundError>
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 67, in run_node
+    result["result"] = node.run(updatehash=updatehash)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 486, in run
+    self._get_hashval()
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 538, in _get_hashval
+    self._get_inputs()
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 609, in _get_inputs
+    self.set_input(key, deepcopy(output_value))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 302, in set_input
+    setattr(self.inputs, parameter, deepcopy(val))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/interfaces/base/traits_extension.py", line 330, in validate
+    value = super(File, self).validate(objekt, name, value, return_pathlike=True)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/interfaces/base/traits_extension.py", line 135, in validate
+    self.error(objekt, name, str(value))
+  File "/usr/local/miniconda/lib/python3.7/site-packages/traits/trait_handlers.py", line 172, in error
+    value )
+traits.trait_errors.TraitError: The 'src_file' trait of a _DSIStudioSrcQCInputSpec instance must be a pathlike object or string representing an existing file, but a value of '/out/tmp/qsiprep_wf/single_subject_180321_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src/sub-180321_dwi_merged.src.gz' <class 'str'> was specified.
+
+Error setting node input:
+Node: raw_src_qc
+input: src_file
+results_file: /out/tmp/qsiprep_wf/single_subject_180321_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src/result_raw_src.pklz
+value: /out/tmp/qsiprep_wf/single_subject_180321_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src/sub-180321_dwi_merged.src.gz
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/process.py", line 232, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 70, in run_node
+    result["result"] = node.result
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 217, in result
+    op.join(self.output_dir(), "result_%s.pklz" % self.name)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/utils.py", line 291, in load_resultfile
+    raise FileNotFoundError(results_file)
+FileNotFoundError: /out/tmp/qsiprep_wf/single_subject_180321_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src_qc/result_raw_src_qc.pklz
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 324, in _invoke_callbacks
+    callback(self)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 159, in _async_callback
+    result = args.result()
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 425, in result
+    return self.__get_result()
+  File "/usr/local/miniconda/lib/python3.7/concurrent/futures/_base.py", line 384, in __get_result
+    raise self._exception
+FileNotFoundError: /out/tmp/qsiprep_wf/single_subject_180321_wf/dwi_preproc_wf/pre_hmc_wf/merge_and_denoise_wf/dwi_qc_wf/raw_src_qc/result_raw_src_qc.pklz
+slurmstepd: error: *** JOB 10480800 ON c473-011 CANCELLED AT 2022-11-01T10:47:41 ***

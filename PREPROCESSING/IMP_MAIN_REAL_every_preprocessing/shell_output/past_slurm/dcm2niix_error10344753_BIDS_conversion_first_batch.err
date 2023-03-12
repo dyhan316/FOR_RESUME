@@ -1,0 +1,6 @@
+Error:  Recompiling with '-DmyInstanceNumberOrderIsNotSpatial' might help.
+Error: Converted 166 of 703 files
+Traceback (most recent call last):
+  File "/work2/08834/tg881334/stampede2/CHA_preproc/IMP_shell_scripts/IMP_MAIN_REAL_every_preprocessing/REAL_step1_dcm2niix_BIDS.py", line 166, in <module>
+    bval_ex = [x for x in file_list if ".bval" in x][0]
+IndexError: list index out of range

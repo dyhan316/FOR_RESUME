@@ -1,0 +1,25 @@
+WARNING (10/20/22 02:14:24): LAUNCHER_WORKDIR variable not set. Using current directory.
+using /tmp/launcher.10431947.hostlist.ZJA88F4f to get hosts
+starting job on c506-031
+starting job on c506-032
+Warning: Permanently added 'c506-031' (ECDSA) to the list of known hosts.
+Warning: Permanently added 'c506-032' (ECDSA) to the list of known hosts.
+[WARNING] This document format requires a nonempty <title> element.
+  Please specify either 'title' or 'pagetitle' in the metadata.
+  Falling back to 'CITATION'
+[WARNING] This document format requires a nonempty <title> element.
+  Please specify either 'title' or 'pagetitle' in the metadata.
+  Falling back to 'CITATION'
+[WARNING] This document format requires a nonempty <title> element.
+  Please specify either 'title' or 'pagetitle' in the metadata.
+  Falling back to 'CITATION'
+[WARNING] This document format requires a nonempty <title> element.
+  Please specify either 'title' or 'pagetitle' in the metadata.
+  Falling back to 'CITATION'
+ file none does not exist . 
+ file none does not exist . 
+ file none does not exist . 
+ file none does not exist . 
+slurmstepd: error: *** JOB 10431947 ON c506-031 CANCELLED AT 2022-10-20T02:54:26 ***
+Killed by signal 15.
+Killed by signal 15.

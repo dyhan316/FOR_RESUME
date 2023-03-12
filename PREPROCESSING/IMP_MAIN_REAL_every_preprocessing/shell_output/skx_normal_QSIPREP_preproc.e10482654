@@ -1,0 +1,2 @@
+WARNING: skipping mount of /scratch/08834/tg881334/CHA_preproc_try/3.qsipreproc_results: stat /scratch/08834/tg881334/CHA_preproc_try/3.qsipreproc_results: no such file or directory
+FATAL:   container creation failed: mount /scratch/08834/tg881334/CHA_preproc_try/3.qsipreproc_results->/out error: while mounting /scratch/08834/tg881334/CHA_preproc_try/3.qsipreproc_results: mount source /scratch/08834/tg881334/CHA_preproc_try/3.qsipreproc_results doesn't exist
