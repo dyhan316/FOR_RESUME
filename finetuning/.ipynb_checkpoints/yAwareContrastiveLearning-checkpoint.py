@@ -1,30 +1,16 @@
-#may need to change run_where to lab or SDCC!
-
-###python3 main_optuna.py --pretrained_path ./weights/y-Aware_Contrastive_MRI_epoch_99.pth --mode finetuning --train_num 50 --layer_control tune_all --stratify iter_strat --random_seed 0 --task test --input_option yAware --binary_class True --save_path finetune_trash --AMP True --run_where lab --nb_epochs 30
-
-
-
 import os
+import sys
+import logging
+import json 
+import time
+import pdb
+
+from tqdm import tqdm
 import torch
 from torch.nn import DataParallel
-from tqdm import tqdm
-import logging
-from Earlystopping import EarlyStopping # ADNI
-import sys
-import pathlib
-import json 
-
-##ADDED
-import sys # for sys.argv
-import optuna
-from finetune_utils import test_data_analysis_2, CosineAnnealingWarmUpRestarts
-import time
 import wandb
-import numpy as np 
-import math
-##
 
-
+from utils import test_data_analysis_2, CosineAnnealingWarmUpRestarts, EarlyStopping
 
 class yAwareCLModel:
 
@@ -45,7 +31,7 @@ class yAwareCLModel:
         self.model = net
         self.FOLD = FOLD
         
-        
+            
         random_seed = config.random_seed
         torch.manual_seed(random_seed)
         torch.cuda.manual_seed(random_seed)
@@ -96,14 +82,16 @@ class yAwareCLModel:
                         {"params": net.down.parameters(), "lr": config.lr*1e-1},
                         {"params": net.classifier.parameters(), "lr": config.lr},
                         ], lr=config.lr, weight_decay=config.weight_decay)
-        #import pdb l pdb.set_trace()
         if config.lr_schedule :  #if schedule exists
             if config.lr_schedule == "lr_plateau" : 
                 ##call lr schduler after defining optimizer
                 self.scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(self.optimizer,'min', factor = 0.2) #could vary patience
                 
-            elif config.lr_schedule in ["cosine_annealing", "cosine_annealing_faster", "cosine_annealing_decay"] : 
-                if config.lr_schedule == "cosine_annealing_decay" : 
+            elif 'cosine_annealing' in config.lr_schedule:
+                if config.lr_schedule.endswith('0'):
+                    t_max = int(config.lr_schedule.split("_")[-1])
+                    self.scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(self.optimizer, T_max = t_max)
+                elif config.lr_schedule == "cosine_annealing_decay" : 
                     self.scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(self.optimizer, T_max = config.nb_epochs)
                 elif config.lr_schedule == "cosine_annealing_faster" : 
                     self.scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(self.optimizer, T_max = 10)
@@ -116,53 +104,34 @@ class yAwareCLModel:
                                                                      epochs = config.nb_epochs + 1, steps_per_epoch = 1) #steps_per_epoch 1 becuase for some reason it spikes at the end
                                                                      
                 #steps_per_epoch = len(loader_train), epochs = config.nb_epochs)
-            
-            
-            #elif config.lr_schedule == "SGDR" : 
+
             elif "SGDR" in config.lr_schedule:
                 if config.lr_schedule == "SGDR_1":
                     self.scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(self.optimizer, T_0 = 50, T_mult=1)
-                    
                 elif config.lr_schedule == "SGDR_2":
                     self.scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(self.optimizer, T_0 = 1, T_mult=2)
-                    
                 elif config.lr_schedule == "SGDR_3":
                     self.scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(self.optimizer, T_0 = 10, T_mult=2)
-                
             
-            elif "custom" in config.lr_schedule : 
+            elif "custom" in config.lr_schedule or 'cawur' in config.lr_schedule.lower() : 
                 self.optimizer.param_groups[0]['lr'] = 0.0 #have to be reset to zero (instead the 
-                if config.lr_schedule == "custom_1" :
+                if config.lr_schedule.endswith("1"):
                     self.scheduler = CosineAnnealingWarmUpRestarts(self.optimizer, T_0 = 100, T_mult = 1, eta_max = config.lr, T_up = 10, gamma = 0.5)
-                    
-                elif config.lr_schedule == "custom_2" :
+                elif config.lr_schedule.endswith("2"):
                     self.scheduler = CosineAnnealingWarmUpRestarts(self.optimizer, T_0 = 100, T_mult = 1, eta_max = config.lr, T_up = 10, gamma = 0.2)
-                
-                elif config.lr_schedule == "custom_3" : 
+                elif config.lr_schedule.endswith("3"): 
                     self.scheduler = CosineAnnealingWarmUpRestarts(self.optimizer, T_0 = 50, T_mult = 1, eta_max = config.lr, T_up = 10, gamma = 0.5)
-                    
-                elif config.lr_schedule == "custom_4" : 
+                elif config.lr_schedule.endswith("4"): 
                     self.scheduler = CosineAnnealingWarmUpRestarts(self.optimizer, T_0 = 50, T_mult = 2, eta_max = config.lr, T_up = 10, gamma = 0.5)
-                    
-                elif config.lr_schedule == "custom_5" : 
+                elif config.lr_schedule.endswith("5"): 
                     self.scheduler = CosineAnnealingWarmUpRestarts(self.optimizer, T_0 = 20, T_mult = 1, eta_max = config.lr, T_up = 3, gamma = 0.8)
-                    
-        
-                elif config.lr_schedule == "custom_6" : 
+                elif config.lr_schedule.endswith("6"): 
                     self.scheduler = CosineAnnealingWarmUpRestarts(self.optimizer, T_0 = 20, T_mult = 2, eta_max = config.lr, T_up = 3, gamma = 0.8)
-                #make frequent but short high gamma
-                #make low gamma only once or twice
-                #
-            
-            #elif config.lr_schedule == "custom_2" : 
-            
+                elif config.lr_schedule.endswith("7"): 
+                    self.scheduler = CosineAnnealingWarmUpRestarts(self.optimizer, T_0 = 45, T_mult = 1, eta_max = config.lr, T_up = 5, gamma = 0.5)
             #elif config.lr_schedule == 'cycliclr' : 
-                
-                
-            #elif config.lr_schedule == 
         else :  #None으로 두기 if not scheduling
             self.scheduler= None 
-        
         
         ###
         self.layer_control = layer_control
@@ -190,21 +159,18 @@ class yAwareCLModel:
             self.path2 = f"{config.save_path}/{config.task}-{self.layer_control}-{config.task_type}/{str(self.pretrained_path).split('/')[-1].split('.')[0]}-train_{self.train_num}/batch_{config.batch_size}-lr_{config.lr}-wd_{config.weight_decay}-tf_{config.tf}/seed_{config.random_seed}"
         
         if FOLD == 0: #i.e. first fold에서만 확인한다!
-            try :
-                os.makedirs(self.path2, exist_ok = False) 
-            except : #if it already exists, then raise error
-                raise ValueError(f"the path {self.path2} already exsits!!! (probably already done?)")
-        
+            os.makedirs(self.path2, exist_ok = True) 
+            
         self.stats_file = open(f'{self.path2}/stats_{FOLD}.txt', 'a', buffering=1) #여기 수정 
         self.eval_stats_file = open(f'{self.path2}/eval_stats_{FOLD}.txt', 'a', buffering=1) #여기 수정 
         
         ###
         
-        if pretrained_path != 'None':
-            print(f"DID use pretrained path :{pretrained_path}")
+        if pretrained_path.endswith("pth"):
+            print(f"*** Model is using pretrained path :{pretrained_path} ***")
             self.load_model(pretrained_path)
-        else :
-            print("FROM SCRATCH")
+        else:
+            print("*** Model is learning FROM SCRATCH ***")
 
         self.model = DataParallel(self.model).to(self.device)
 
@@ -251,21 +217,21 @@ class yAwareCLModel:
         
         tracking = {"train_loss" : [], "valid_loss" : [], "valid_auroc" : []}
         scaler = torch.cuda.amp.GradScaler(enabled = self.config.AMP) 
-        for epoch in range(self.config.nb_epochs):
+        for epoch in tqdm(range(self.config.nb_epochs)):
             ###############CHANGED###########
             weight_tracker(self.model, module = True, verbose =  self.config.verbose)
             ###############
             
             
             ##training loop## (one epoch)
-            nb_batch = len(self.loader)
+            # nb_batch = len(self.loader)
             training_loss = 0 ### ADNI [] replaced to 0 (original code had error)
             training_acc = 0 # ADNI
             
-            pbar = tqdm(total=nb_batch, desc="Training")
+            # pbar = tqdm(total=nb_batch, desc="Training")
             for (inputs, labels) in self.loader:
                 
-                pbar.update()
+                # pbar.update()
                 labels = torch.flatten(labels).type(torch.LongTensor) # ADNI
                 inputs = inputs.to(self.device)
                 labels = labels.to(self.device)
@@ -276,6 +242,7 @@ class yAwareCLModel:
                     if self.config.task_type == 'reg' or self.config.binary_class == True : 
                         labels = labels.to(torch.float32) # ADNI
                     
+                    #import pdb ; pdb.set_trace()
                     batch_loss = self.loss(y, labels)
                 # Scales loss.  Calls backward() on scaled loss to create scaled gradients.
                 scaler.scale(batch_loss).backward()
@@ -298,11 +265,6 @@ class yAwareCLModel:
             if self.config.binary_class == False:
                 training_loss = training_loss / len(self.loader.dataset) #should be false if BCEWithLogitLoss is used
             training_acc = 100 * training_acc / len(self.loader.dataset)
-            pbar.close()
-            if math.isnan(training_loss) : 
-                wandb.run.summary['state'] = "nan_pruned"
-                print("purned because training loss NAN")
-                raise optuna.TrialPruned() #prune this trial    
             
             tracking['train_loss'].append(training_loss)
             
@@ -317,49 +279,19 @@ class yAwareCLModel:
                 else : 
                     self.scheduler.step() 
             
-            if self.config.prune and self.FOLD == 0 : #i.e. only prune on first thing, if prune mode is true
-                self.trial.report(val_auroc, epoch) #didn't use loss as  the pruning criteria due to the reasons : (https://github.com/optuna/optuna/issues/4373) 
-                
-                if self.trial.should_prune():
-                    print("PRUNED BABY")
-                    raise optuna.TrialPruned()
-                    #replace last val_loss trial report with AUROC because optuna TPE sampler does based on the objective function, and last report value is used
-                
             tracking['valid_loss'].append(val_loss)
             tracking['valid_auroc'].append(val_auroc)
             wandb.log({"base_lr" : self.optimizer.param_groups[0]['lr'],"validation_loss" : val_loss,
                       "validation_accuracy" : 0.01*val_acc, "validation_auroc" : val_auroc}, step = epoch) #log for each epoch
-            #multiple values in the same epoch might confuse the system => 
-            
-            #======================TRYING TO IMPLEMENT PURNER========#
-            ###trying to use smart pruner => not work yet
-            if self.FOLD == 0 : #i.e. first fold 에서만 일단 pruning 
-                pass
-                                
-                ###trying to prune with val_loss or val_auroc => NOT WORK BECAUSE direction (will build custom pruner later)
-                #self.trial.report(val_loss, epoch)
-                ##prune 
-                #if self.trial.should_prune():
-                #    print("pruend becasue weird val_auroc value")
-                #    wandb.config.pruned = True
-                #    raise optuna.TrialPruned()
-                #    # Prune if sub-optimal
-            
-            ###trying to use dumb pruner (used regardless of the fold)
-            if val_loss > 1e10 and epoch > 3 : #at least run for 10 epochs then see if pruning shouold be done 
-                print("pruned because val_loss > 1e10")
-                wandb.run.summary['state'] = "pruend_large_val_loss"
-                #os.rmdir(self.path2)
-                raise optuna.TrialPruned()
-            #========================================================#
-            
+           
             
             #printing some statistics
-            print("\nEpoch [{}/{}] Training loss = {:.4f}\t Validation loss = {:.4f}\t".format(
-                  epoch+1, self.config.nb_epochs, training_loss, val_loss))
-            if self.config.task_type == 'cls': # ADNI
-                print("Training accuracy: {:.2f}%\t Validation accuracy: {:.2f}%\t Validation AUROC: {:.4f}\t".format(
-                      training_acc, val_acc, val_auroc, flush=True))
+            end_time = time.time()
+            spent_time = round(end_time-start_time, 2)
+            start_time = end_time
+            if self.config.task_type == 'cls':
+                print("Epoch [{}/{}]: Loss(train/val) = [{:.4f}/{:.4f}]\t Accuracy(train/val) = [{:.2f}%/{:.2f}%]\tVal AUROC = {:.4f}\tSpent {:.2f}s".format(
+                      epoch+1, self.config.nb_epochs, training_loss, val_loss, training_acc, val_acc, val_auroc, spent_time), flush=True)
             
             #removing this and change to sth else since we're doing optuna 
             #early_stopping(val_loss, self.model)
@@ -389,21 +321,11 @@ class yAwareCLModel:
                          val_loss = (val_loss),
                          val_acc = (val_acc ), 
                         val_auroc = round(val_auroc, 3),
-                        time = round(time.time()-start_time, 2))
+                        time = spent_time)
             
-            print(json.dumps(stats))
             print(json.dumps(stats), file=self.stats_file)
             ####################################################################################
         last_epoch = epoch + 1  #i.e. save the training phase's epoch (+1 because starts from zero)
-        
-        
-        #train_loss_std = np.std(np.array(tracking['train_loss']))
-        #val_loss_std = np.std(np.array(tracking['valid_loss']))
-        #val_auroc_std = np.std(np.array(tracking['valid_auroc']))        
-        #wandb.run.summary["train_loss_std"] = train_loss_std
-        #wandb.run.summary["val_loss_std"] = val_loss_std
-        #wandb.run.summary["val_auroc_std"] = val_auroc_std
-
         
         #===loading the early stopped model, and using it one last time to calculate the validaiton and so on===#
         
@@ -453,9 +375,8 @@ class yAwareCLModel:
         ##selecting loader2use based on whether test or valid
         loader2use = self.loader_test if mode == "test" else self.loader_val if mode == "valid" else None
         
-        
         nb_batch = len(loader2use)
-        pbar = tqdm(total=nb_batch, desc=mode)
+        # pbar = tqdm(total=nb_batch, desc=mode)
         loss = 0
         acc = 0
         outGT = torch.FloatTensor().cuda() #empty tensors
@@ -463,19 +384,11 @@ class yAwareCLModel:
         with torch.no_grad():
             self.model.eval()
             for (inputs, labels) in loader2use:
-                pbar.update()
+                # pbar.update()
                 labels = torch.flatten(labels).type(torch.LongTensor)
                 inputs = inputs.to(self.device)
                 labels = labels.to(self.device)
-                y = self.model(inputs)
-                
-                
-                #pruning if in valid mode (i.e. when using optuna)
-                if y.isnan().any(): #i.e. if there are any nans, in the output
-                    wandb.run.summary['state'] = "y_nan_pruned"
-                    
-                    print("purned because NAN")
-                    raise optuna.TrialPruned() #prune this trial      
+                y = self.model(inputs)  
                 
                 if self.config.task_type == 'reg': 
                     labels = labels.to(torch.float32) 
@@ -516,7 +429,7 @@ class yAwareCLModel:
                 batch_loss = self.loss(y, labels)
                 loss += batch_loss.item()*inputs.size(0)
                     
-        pbar.close()
+        # pbar.close()
         
         ##normalizing the results by the number of samples used and so on 
         if self.config.task_type == 'cls':    
@@ -537,20 +450,20 @@ class yAwareCLModel:
         
         try: #실제로 사용되는 것 
             checkpoint = torch.load(path, map_location=lambda storage, loc: storage)
-            print("try in load_model succeeded") 
+            print("== Load_model succeeded ==") 
         except BaseException as e:
             self.logger.error('Impossible to load the checkpoint: %s' % str(e))
             raise ValueError("loading checkpoint failed!")
         if checkpoint is not None:
             try:
                 if hasattr(checkpoint, "state_dict"):
-                    print("hasattr has been used")
+                    print("== hasattr has been used ==")
                     unexpected = self.model.load_state_dict(checkpoint.state_dict())
                     self.logger.info('Model loading info: {}'.format(unexpected))
                 elif isinstance(checkpoint, dict): #실제로 사용되는 것 (for both BT AND checkpoint)
-                    print("isinstance has been used") 
+                    print("== isinstance has been used ==") 
                     if "model" in checkpoint:
-                        print("model in checkpoint = True") 
+                        print("== model in checkpoint = True ==") #실제로 사용되는 것 (for junbeom)
                         
                         #first attept at loading, assuming no `module.` thing (i.e. saving DDP model done properly) (https://stackoverflow.com/questions/70386800/what-is-the-proper-way-to-checkpoint-during-training-when-using-distributed-data)
                         unexpected = self.model.load_state_dict(checkpoint["model"], strict=False) #original method
@@ -570,30 +483,30 @@ class yAwareCLModel:
                         if len(unexpected.missing_keys) > 8 : #if still not proper,
                             raise NotImplementedError("probably improper loading was done, as more than 100 keys are missing")
                         ####
-                        print(f"========inside load_model =======")
+                        print(f"======== inside load_model =======")
                         weight_tracker(self.model, verbose = self.config.verbose)
                     else :
-                        print("===tried loading directly becasue model no tin the thing===")
+                        print("=== tried loading directly becasue model no tin the thing ===")
                         unexpected = self.model.load_state_dict(checkpoint, strict = False)
                         weight_tracker(self.model, verbose = self.config.verbose)
                         
                         if len(unexpected.missing_keys) > 7 : #if still not proper,
                             raise NotImplementedError("probably improper loading was done, as more than 100 keys are missing")
-                    print(f"===unexpected keys : {unexpected.missing_keys}===")
+                    print(f"=== unexpected keys : {unexpected.missing_keys} ===")
                 else:
-                    print("===else has been used====")
+                    print("=== else has been used====")
                     unexpected = self.model.load_state_dict(checkpoint)
                     self.logger.info('Model loading info: {}'.format(unexpected))
             #except BaseException as e:
             except Exception as e :
-                print("weight loading failed")
+                print("== weight loading failed ==")
                 
                 raise ValueError('Error while loading the model\'s weights: %s' % str(e))
 
 
 def weight_tracker(model, module = False, verbose = None): #module : if model.module of just model?
     if verbose : 
-        print(f" training mode? : {model.training}")
+        print(f"- training mode? : {model.training}")
         
         if module == True:
             model = model.module #i.e. model을 model.module로 바꾸기

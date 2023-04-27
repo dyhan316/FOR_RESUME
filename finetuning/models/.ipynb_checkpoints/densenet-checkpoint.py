@@ -88,7 +88,7 @@ class DenseNet(nn.Module):
 
     Args:
         growth_rate (int) - how many filters to add each layer (`k` in paper)
-        block_config (list of 4 ints) - how many layers in each pooling block
+        block_config (list of 4NDARINV003RTV85 ints) - how many layers in each pooling block
         num_init_features (int) - the number of filters to learn in the first convolution layer
         bn_size (int) - multiplicative factor for number of bottle neck layers
           (i.e. bn_size * k features in the bottleneck layer)
@@ -166,6 +166,8 @@ class DenseNet(nn.Module):
             self.classifier = nn.Linear(num_features, num_classes)
         #===================================#
         
+        self.input_imgs = None 
+        
         # Init. with kaiming
         for m in self.modules():
             if isinstance(m, nn.Conv3d):
@@ -176,55 +178,31 @@ class DenseNet(nn.Module):
             elif isinstance(m, nn.Linear):
                 nn.init.constant_(m.bias, 0)
 
-    def forward(self, x):
+    def forward(self, x, **kwargs):
         ## Eventually keep the input images for visualization
-        self.input_imgs = x.detach().cpu().numpy()
+        if 'debug' in kwargs:
+            self.input_imgs = x.detach().cpu().numpy()
         features = self.features(x)
-        if self.mode == "classifier":
-            out = F.relu(features, inplace=True)
-            out = F.adaptive_avg_pool3d(out, 1)
-            out = torch.flatten(out, 1)
+        out = F.relu(features, inplace=True)
+        out = F.adaptive_avg_pool3d(out, 1)
+        out = torch.flatten(out, 1)
+        
+        if "classifier" in self.mode: # includes classifier_no_BN, classifier_inst_BN
             out = self.classifier(out)
         elif self.mode == "encoder":
-            out = F.relu(features, inplace=True)
-            out = F.adaptive_avg_pool3d(out, 1)
-            out = torch.flatten(out, 1)
-
             out = self.hidden_representation(out)
             out = F.relu(out, inplace=True)
             out = self.head_projection(out)
         #=======ADDED SOME MODES============# 
         elif self.mode == "CNN_flatten":
-            out = F.relu(features, inplace=True)
-            out = F.adaptive_avg_pool3d(out, 1)
-            out = torch.flatten(out, 1)
-        elif self.mode == "barlow_encoder":
-            out = F.relu(features, inplace=True)
-            out = F.adaptive_avg_pool3d(out, 1)
-            out = torch.flatten(out, 1)
-            
+            pass
+        elif self.mode == "barlow_encoder":  
             out = self.fc(out) #passes through on fc layer 
-        elif self.mode == "classifier_no_BN":
-            out = F.relu(features, inplace = True)
-            out = F.adaptive_avg_pool3d(out, 1)
-            out = torch.flatten(out, 1)
-            
-            out = self.classifier(out) #passes through on fc layer 
-            
-        
-        elif self.mode == "classifier_inst_BN" :
-            out = F.relu(features, inplace=True)
-            out = F.adaptive_avg_pool3d(out, 1)
-            out = torch.flatten(out, 1)
-            
-            out = self.classifier(out)
-        #===================================#
         
         return out.squeeze(dim=1) #, features #if you want to check the feature size (CNN output before flattening)
 
-    def get_current_visuals(self):
-        return self.input_imgs
-
+    # def get_current_visuals(self):
+    #     return self.input_imgs
 
 
 def _densenet(arch, growth_rate, block_config, num_init_features, **kwargs):

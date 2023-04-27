@@ -42,7 +42,10 @@ def get_dict(config , label_train, label_valid, label_test):
         test_sub_data_list = list(label_test['SubjectID'])      
         test_img_path_list = [Path(config.data) / (sub + ".npy") for sub in test_sub_data_list]
         test_img_file_list = test_sub_data_list  #they are the same in ABCD's case 
-    
+        
+        
+    elif "CHA" in config.task :
+        import pdb ; pdb.set_trace()
     elif "UKB" in config.task :
         raise NotImplementedError("not done yet mf")
         

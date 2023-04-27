@@ -56,6 +56,20 @@ def get_dict(config , label_train, label_valid, label_test):
         test_img_path_list = [Path(config.data) / (sub + ".npy") for sub in test_sub_data_list]
         test_img_file_list = test_sub_data_list  #they are the same in ABCD's case 
     
+    
+    elif "CHA" in config.task : 
+        train_sub_data_list = list(label_train['subjectkey'])      
+        train_img_path_list = [Path(config.data) / (sub + ".nii.gz") for sub in train_sub_data_list] #".npy" because we need the npy things
+        train_img_file_list = train_sub_data_list  #they are the same in ABCD's case 
+        
+        valid_sub_data_list = list(label_valid['subjectkey'])      
+        valid_img_path_list = [Path(config.data) / (sub + ".nii.gz") for sub in valid_sub_data_list]
+        valid_img_file_list = valid_sub_data_list  #they are the same in ABCD's case 
+        
+        test_sub_data_list = list(label_test['subjectkey'])      
+        test_img_path_list = [Path(config.data) / (sub + ".nii.gz") for sub in test_sub_data_list]
+        test_img_file_list = test_sub_data_list  #they are the same in ABCD's case 
+        
     elif "UKB" in config.task :
         raise NotImplementedError("not done yet mf")
         

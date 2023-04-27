@@ -35,7 +35,7 @@ class Config:
             ###special, must change by the weights we use 
             
             #self.resize_method = 'reshape'    #"padcrop", None (three cases, resizing or pad/cropping or none)        
-            #self.input_size = (1, 80, 80, 80) 
+            #self.input_size = (1, 80, 80, 80) # junbeom weights
             
             #these are now deifned in parser
             #self.batch_size = 32            
@@ -68,7 +68,7 @@ class Config:
                 ### ADNI
                 self.data = '/scratch/connectome/study_group/VAE_ADHD/data' #'./adni_t1s_baseline' # ADNI #ADNI dataset path 
                 self.label = './csv/fsdat_baseline.csv' # where the label file is 
-                
+                self.iter_strat_label = {"binary" : ['PTGENDER'], "multiclass" : [] ,"continuous" : ["PTAGE"]} 
                 if task == "ADNI_ALZ_ADCN":
                     self.task_type = 'cls' # ADNI # 'cls' or 'reg' #####
                     self.label_name = 'Dx.new' # ADNI # `Dx.new` #####
@@ -133,6 +133,17 @@ class Config:
             elif "UKB" in task : 
                 self.data = '/scratch/connectome/3DCNN/data/2.UKB/1.sMRI_fs_cropped'
                 raise NotImplementedError("UKB not done yet, also BT, yAware weights에 따라 resize method등등 다르게 해서 하기!")
+                
+            elif "CHA" in task : 
+                self.data = '/storage/bigdata/CHA_bigdata/sMRI_brain'
+                self.label = '/storage/bigdata/CHA_bigdata/metadata/CHA_sMRI_brain.csv'
+                self.iter_strat_label = {"binary" : ['sex'], "multiclass" : [] ,"continuous" : ["age(days)"]}
+                
+                if "ASDGDD" in task : 
+                    self.task_type = 'cls'
+                    self.num_classes = 2
+                    self.label_name = "ASDvsGDD"
+                    self.task_name = "ASD/GDD"
                 
             else:
                 raise NotImplementedError(f"not implemented for {task}")

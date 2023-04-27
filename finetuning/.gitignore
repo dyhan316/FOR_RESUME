@@ -1,0 +1,7 @@
+core*
+*pt
+*pth
+/wandb
+/weights
+finetune_RESULTS
+/results/

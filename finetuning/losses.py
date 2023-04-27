@@ -1,13 +1,9 @@
 # Third party import
-from distutils.log import error
-import logging
-import math
 import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as func
 from sklearn.metrics.pairwise import rbf_kernel
-import numpy as np
 
 class GeneralizedSupervisedNTXenLoss(nn.Module):
     def __init__(self, config, temperature, return_logits, sigma): # ADNI
@@ -85,7 +81,6 @@ class GeneralizedSupervisedNTXenLoss(nn.Module):
 
     def __str__(self):
         return "{}(temp={}, sigma={}, see losses.py for kernel info)".format(type(self).__name__, self.temperature, self.sigma) # ADNI
-
 
 
 class NTXenLoss(nn.Module):

@@ -1,0 +1,6 @@
+/wandb
+wandb/
+/wandb_SDCC
+wandb_SDCC/
+/__pycache__
+__pycache__/
